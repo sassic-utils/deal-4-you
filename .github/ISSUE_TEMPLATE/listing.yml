@@ -1,0 +1,30 @@
+name: Listing
+description: Create a new Deal4U listing
+title: ""
+labels:
+  - listing
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the item.
+      placeholder: Enter listing description...
+    validations:
+      required: true
+
+  - type: input
+    id: price
+    attributes:
+      label: Price
+      placeholder: "650 EUR"
+    validations:
+      required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact
+      placeholder: "Telegram: @username"
+    validations:
+      required: true
