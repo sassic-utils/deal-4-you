@@ -79,7 +79,7 @@ function HomePage() {
 
   return (
     <main style={styles.page}>
-      <header style={styles.header}>
+      <header className="page-header">
         <div>
           <h1 style={styles.title}>Free Board</h1>
           <p style={styles.subtitle}>Доска объявлений работает.</p>
@@ -97,8 +97,8 @@ function HomePage() {
       )}
 
       {!loading && !error && (
-        <div style={styles.layout}>
-          <aside style={styles.sidebar}>
+        <div className="page-layout">
+          <aside className="filters-sidebar">
             <div style={styles.filtersCard}>
               <div style={styles.filtersHeader}>
                 <h2 style={styles.filtersTitle}>Фильтры</h2>
@@ -158,7 +158,7 @@ function HomePage() {
             </div>
           </aside>
 
-          <section style={styles.results}>
+          <section className="results-area">
             {filteredListings.length === 0 ? (
               <StatusMessage>По фильтрам ничего не найдено.</StatusMessage>
             ) : (
@@ -179,15 +179,6 @@ const styles: Record<string, CSSProperties> = {
       'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     background: "#f3f4f6",
     color: "#111827",
-  },
-
-  header: {
-    maxWidth: "1120px",
-    margin: "0 auto 12px",
-    display: "flex",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    gap: "12px",
   },
 
   title: {
@@ -213,20 +204,6 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "13px",
     fontWeight: 700,
     whiteSpace: "nowrap",
-  },
-
-  layout: {
-    width: "100%",
-    maxWidth: "1120px",
-    margin: "0 auto",
-    display: "grid",
-    gridTemplateColumns: "240px minmax(0, 1fr)",
-    gap: "14px",
-    alignItems: "start",
-  },
-
-  sidebar: {
-    minWidth: 0,
   },
 
   filtersCard: {
@@ -288,10 +265,6 @@ const styles: Record<string, CSSProperties> = {
     padding: "9px 10px",
     fontSize: "14px",
     outline: "none",
-  },
-
-  results: {
-    minWidth: 0,
   },
 };
 
