@@ -1,10 +1,38 @@
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
+function useIsMobile(maxWidth = 640) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= maxWidth);
+    };
+
+    checkIsMobile();
+
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, [maxWidth]);
+
+  return isMobile;
+}
+
 function DonatePanel() {
+  const isMobile = useIsMobile();
+
   return (
     <section style={styles.panel}>
-      <span style={styles.text}>
-        Если сайт полезен — поддержите проект.
+      <span
+        style={{
+          ...styles.text,
+          ...(isMobile ? styles.textMobile : null),
+        }}
+      >
+        Если сайт полезен — поддержите проект ❤️
       </span>
 
       <a href="#/donate" style={styles.button}>
@@ -31,7 +59,8 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "10px",
+    gap: "8px",
+    minWidth: 0,
   },
 
   text: {
@@ -39,6 +68,16 @@ const styles: Record<string, CSSProperties> = {
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
+  },
+
+  textMobile: {
+    whiteSpace: "normal",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: 1.2,
   },
 
   button: {

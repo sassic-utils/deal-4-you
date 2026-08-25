@@ -1,10 +1,38 @@
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import PublicationRulesModal from "./PublicationRulesModal";
 
+function useIsMobile(maxWidth = 640) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= maxWidth);
+    };
+
+    checkIsMobile();
+
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, [maxWidth]);
+
+  return isMobile;
+}
+
 function NoticePanel() {
+  const isMobile = useIsMobile();
+
   return (
     <section style={styles.panel}>
-      <span style={styles.text}>
+      <span
+        style={{
+          ...styles.text,
+          ...(isMobile ? styles.textMobile : null),
+        }}
+      >
         Размещение объявлений:{" "}
         <a
           href="https://t.me/andrei_kuzniatsou"
@@ -38,7 +66,8 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "10px",
+    gap: "8px",
+    minWidth: 0,
   },
 
   text: {
@@ -46,6 +75,16 @@ const styles: Record<string, CSSProperties> = {
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
+  },
+
+  textMobile: {
+    whiteSpace: "normal",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: 1.2,
   },
 
   link: {
