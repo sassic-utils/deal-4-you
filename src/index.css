@@ -48,6 +48,12 @@ img {
 
 .filters-sidebar {
   min-width: 0;
+  display: block;
+}
+
+.filters-card {
+  position: sticky;
+  top: 14px;
 }
 
 .results-area {
@@ -80,15 +86,27 @@ img {
   }
 
   .page-layout {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .filters-sidebar {
+    display: block;
+    width: 100%;
     margin-bottom: 14px;
+    order: 1;
   }
 
-  .filters-sidebar > div {
-    position: static !important;
+  .filters-card {
+    position: static;
+    width: 100%;
+  }
+
+  .results-area {
+    width: 100%;
+    min-width: 0;
+    order: 2;
   }
 
   .listings-grid {

@@ -80,7 +80,7 @@ function HomePage() {
   return (
     <main style={styles.page}>
       <header className="page-header">
-        <div>
+        <div style={styles.headerText}>
           <h1 style={styles.title}>Free Board</h1>
           <p style={styles.subtitle}>Доска объявлений работает.</p>
         </div>
@@ -99,7 +99,7 @@ function HomePage() {
       {!loading && !error && (
         <div className="page-layout">
           <aside className="filters-sidebar">
-            <div style={styles.filtersCard}>
+            <div className="filters-card" style={styles.filtersCard}>
               <div style={styles.filtersHeader}>
                 <h2 style={styles.filtersTitle}>Фильтры</h2>
 
@@ -117,6 +117,7 @@ function HomePage() {
               <label style={styles.field}>
                 <span style={styles.label}>Поиск</span>
                 <input
+                  type="search"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="Название, описание..."
@@ -181,6 +182,10 @@ const styles: Record<string, CSSProperties> = {
     color: "#111827",
   },
 
+  headerText: {
+    minWidth: 0,
+  },
+
   title: {
     margin: 0,
     fontSize: "30px",
@@ -207,8 +212,6 @@ const styles: Record<string, CSSProperties> = {
   },
 
   filtersCard: {
-    position: "sticky",
-    top: "14px",
     background: "#ffffff",
     border: "1px solid #e5e7eb",
     borderRadius: "14px",
