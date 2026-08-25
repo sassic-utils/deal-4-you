@@ -351,8 +351,7 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     width: "100%",
     aspectRatio: "4 / 3",
-    background:
-      "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
+    background: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
     overflow: "hidden",
     flexShrink: 0,
@@ -366,13 +365,16 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     color: "#64748b",
+    background:
+      "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
   },
 
   image: {
     width: "100%",
     height: "100%",
-    objectFit: "cover",
+    objectFit: "contain",
     display: "block",
+    background: "#ffffff",
   },
 
   imageIcon: {
@@ -542,8 +544,7 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     width: "100%",
     aspectRatio: "16 / 9",
-    background:
-      "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
+    background: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
     overflow: "hidden",
   },
@@ -603,7 +604,7 @@ const styles: Record<string, CSSProperties> = {
     padding: 0,
     borderRadius: "8px",
     border: "2px solid transparent",
-    background: "#e5e7eb",
+    background: "#ffffff",
     overflow: "hidden",
     cursor: "pointer",
   },
@@ -615,8 +616,9 @@ const styles: Record<string, CSSProperties> = {
   thumbnailImage: {
     width: "100%",
     height: "100%",
-    objectFit: "cover",
+    objectFit: "contain",
     display: "block",
+    background: "#ffffff",
   },
 
   thumbnailPlaceholder: {
@@ -626,6 +628,7 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "18px",
+    background: "#f1f5f9",
   },
 
   modalContent: {
