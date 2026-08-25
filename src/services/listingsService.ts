@@ -1,9 +1,17 @@
 import type { Listing, ParsedListing } from "../models/listing";
 
 function getLabelValue(labels: string[], prefix: string) {
-  const found = labels.find((label) => label.startsWith(`${prefix}:`));
+  const normalizedPrefix = `${prefix.toLowerCase()}:`;
 
-  return found ? found.replace(`${prefix}:`, "").trim() : "";
+  const found = labels.find((label) =>
+    label.toLowerCase().startsWith(normalizedPrefix)
+  );
+
+  if (!found) {
+    return "";
+  }
+
+  return found.slice(found.indexOf(":") + 1).trim();
 }
 
 function getSection(body: string, sectionName: string) {
