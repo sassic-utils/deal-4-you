@@ -1,0 +1,13 @@
+[
+  {
+    "id": "demo-001",
+    "title": "iPhone 15 Pro 256GB",
+    "description": "Excellent condition",
+    "price": 650,
+    "currency": "EUR",
+    "city": "Berlin",
+    "category": "electronics",
+    "images": [],
+    "status": "ACTIVE"
+  }
+]
