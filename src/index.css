@@ -44,28 +44,11 @@ img {
   }
 }
 
-/* Мобильная карусель как Instagram */
 @media (max-width: 640px) {
   .listings-grid {
-    max-width: none;
-    display: flex;
-    overflow-x: auto;
-    gap: 14px;
-    padding: 2px 14px 18px;
-    margin-left: -14px;
-    margin-right: -14px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 14px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .listings-grid > * {
-    flex: 0 0 86%;
-    scroll-snap-align: start;
-  }
-
-  .listings-grid::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 12px;
   }
 }
