@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "generate:listings": "tsx scripts/generate-listings.ts"
+  },
+  "dependencies": {
+    "@octokit/rest": "^21.0.0",
+    "gray-matter": "^4.0.3",
+    "react": "^latest",
+    "react-dom": "^latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^latest",
+    "vite": "^latest",
+    "typescript": "^latest",
+    "tsx": "^latest"
+  }
+}
