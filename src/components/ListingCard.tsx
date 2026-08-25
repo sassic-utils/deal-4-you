@@ -157,15 +157,6 @@ function ListingCard({ listing }: ListingCardProps) {
                 <p style={styles.price}>{listing.price}</p>
               </section>
             )}
-
-            {listing.description && (
-              <section style={styles.section}>
-                <h3 style={styles.sectionTitle}>Описание</h3>
-                <p style={styles.textPreview} title={listing.description}>
-                  {listing.description}
-                </p>
-              </section>
-            )}
           </div>
 
           <div style={styles.bottom}>
@@ -226,7 +217,10 @@ function ListingCard({ listing }: ListingCardProps) {
                 <>
                   <button
                     type="button"
-                    style={{ ...styles.galleryButton, ...styles.galleryButtonLeft }}
+                    style={{
+                      ...styles.galleryButton,
+                      ...styles.galleryButtonLeft,
+                    }}
                     onClick={showPreviousImage}
                     aria-label="Предыдущее фото"
                   >
@@ -235,7 +229,10 @@ function ListingCard({ listing }: ListingCardProps) {
 
                   <button
                     type="button"
-                    style={{ ...styles.galleryButton, ...styles.galleryButtonRight }}
+                    style={{
+                      ...styles.galleryButton,
+                      ...styles.galleryButtonRight,
+                    }}
                     onClick={showNextImage}
                     aria-label="Следующее фото"
                   >
@@ -248,9 +245,7 @@ function ListingCard({ listing }: ListingCardProps) {
                 </>
               )}
 
-              {!hasImages && (
-                <div style={styles.modalImageCounter}>Нет фото</div>
-              )}
+              {!hasImages && <div style={styles.modalImageCounter}>Нет фото</div>}
             </div>
 
             {hasMultipleImages && (
@@ -355,6 +350,7 @@ const styles: Record<string, CSSProperties> = {
     borderBottom: "1px solid #e5e7eb",
     overflow: "hidden",
     flexShrink: 0,
+    padding: "8px",
   },
 
   imagePlaceholder: {
@@ -375,6 +371,7 @@ const styles: Record<string, CSSProperties> = {
     objectFit: "contain",
     display: "block",
     background: "#ffffff",
+    borderRadius: "10px",
   },
 
   imageIcon: {
@@ -452,17 +449,6 @@ const styles: Record<string, CSSProperties> = {
     textTransform: "uppercase",
     letterSpacing: "0.08em",
     color: "#9ca3af",
-  },
-
-  textPreview: {
-    margin: 0,
-    color: "#374151",
-    lineHeight: 1.25,
-    fontSize: "13px",
-    display: "-webkit-box",
-    WebkitLineClamp: 3,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
   },
 
   price: {
@@ -547,6 +533,7 @@ const styles: Record<string, CSSProperties> = {
     background: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
     overflow: "hidden",
+    padding: "10px",
   },
 
   galleryButton: {
