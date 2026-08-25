@@ -10,8 +10,18 @@ function ListingCard({ listing }: ListingCardProps) {
   return (
     <article style={styles.card}>
       <div style={styles.imagePlaceholder}>
-        <span style={styles.imageIcon}>🖼️</span>
-        <span style={styles.imageText}>Фото</span>
+        {listing.image ? (
+          <img
+            src={`${import.meta.env.BASE_URL}images/${listing.image}`}
+            alt={listing.title}
+            style={styles.image}
+          />
+        ) : (
+          <>
+            <span style={styles.imageIcon}>🖼️</span>
+            <span style={styles.imageText}>Фото</span>
+          </>
+        )}
       </div>
 
       <div style={styles.content}>
@@ -162,6 +172,12 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "11px",
     lineHeight: 1.2,
     fontWeight: 700,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    display: "block",
   },
 };
 

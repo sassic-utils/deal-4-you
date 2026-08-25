@@ -41,6 +41,7 @@ export function parseListing(listing: Listing): ParsedListing {
     description: getSection(listing.body, "Description"),
     price: getSection(listing.body, "Price"),
     contact: getSection(listing.body, "Contact"),
+    image: getSection(listing.body, "Image"),
     city: getLabelValue(listing.labels, "city"),
     category: getLabelValue(listing.labels, "category"),
     status: getLabelValue(listing.labels, "status"),
