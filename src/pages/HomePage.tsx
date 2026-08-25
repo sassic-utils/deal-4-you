@@ -10,6 +10,10 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
+  const [category, setCategory] = useState("");
+
   useEffect(() => {
     async function loadListings() {
       try {
@@ -27,6 +31,52 @@ function HomePage() {
 
   const parsedListings = useMemo(() => parseListings(listings), [listings]);
 
+  const cities = useMemo(() => {
+    return Array.from(
+      new Set(parsedListings.map((listing) => listing.city).filter(Boolean))
+    ).sort();
+  }, [parsedListings]);
+
+  const categories = useMemo(() => {
+    return Array.from(
+      new Set(parsedListings.map((listing) => listing.category).filter(Boolean))
+    ).sort();
+  }, [parsedListings]);
+
+  const filteredListings = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    return parsedListings.filter((listing) => {
+      const matchesSearch =
+        !normalizedSearch ||
+        [
+          listing.title,
+          listing.description,
+          listing.city,
+          listing.category,
+          listing.price,
+          listing.contact,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(normalizedSearch);
+
+      const matchesCity = !city || listing.city === city;
+      const matchesCategory = !category || listing.category === category;
+
+      return matchesSearch && matchesCity && matchesCategory;
+    });
+  }, [parsedListings, search, city, category]);
+
+  const hasActiveFilters = Boolean(search || city || category);
+
+  function resetFilters() {
+    setSearch("");
+    setCity("");
+    setCategory("");
+  }
+
   return (
     <main style={styles.page}>
       <header style={styles.header}>
@@ -35,7 +85,9 @@ function HomePage() {
           <p style={styles.subtitle}>Доска объявлений работает.</p>
         </div>
 
-        <div style={styles.counter}>{parsedListings.length} объявл.</div>
+        <div style={styles.counter}>
+          {filteredListings.length} из {parsedListings.length} объявл.
+        </div>
       </header>
 
       {loading && <StatusMessage>Загрузка объявлений...</StatusMessage>}
@@ -44,12 +96,76 @@ function HomePage() {
         <StatusMessage variant="error">Ошибка: {error}</StatusMessage>
       )}
 
-      {!loading && !error && parsedListings.length === 0 && (
-        <StatusMessage>Пока нет объявлений.</StatusMessage>
-      )}
+      {!loading && !error && (
+        <div style={styles.layout}>
+          <aside style={styles.sidebar}>
+            <div style={styles.filtersCard}>
+              <div style={styles.filtersHeader}>
+                <h2 style={styles.filtersTitle}>Фильтры</h2>
 
-      {!loading && !error && parsedListings.length > 0 && (
-        <ListingsGrid listings={parsedListings} />
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    style={styles.resetButton}
+                    onClick={resetFilters}
+                  >
+                    Сбросить
+                  </button>
+                )}
+              </div>
+
+              <label style={styles.field}>
+                <span style={styles.label}>Поиск</span>
+                <input
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Название, описание..."
+                  style={styles.input}
+                />
+              </label>
+
+              <label style={styles.field}>
+                <span style={styles.label}>Город</span>
+                <select
+                  value={city}
+                  onChange={(event) => setCity(event.target.value)}
+                  style={styles.input}
+                >
+                  <option value="">Все города</option>
+                  {cities.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label style={styles.field}>
+                <span style={styles.label}>Категория</span>
+                <select
+                  value={category}
+                  onChange={(event) => setCategory(event.target.value)}
+                  style={styles.input}
+                >
+                  <option value="">Все категории</option>
+                  {categories.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </aside>
+
+          <section style={styles.results}>
+            {filteredListings.length === 0 ? (
+              <StatusMessage>По фильтрам ничего не найдено.</StatusMessage>
+            ) : (
+              <ListingsGrid listings={filteredListings} />
+            )}
+          </section>
+        </div>
       )}
     </main>
   );
@@ -64,26 +180,30 @@ const styles: Record<string, CSSProperties> = {
     background: "#f3f4f6",
     color: "#111827",
   },
+
   header: {
-    maxWidth: "1024px",
+    maxWidth: "1120px",
     margin: "0 auto 12px",
     display: "flex",
     alignItems: "flex-end",
     justifyContent: "space-between",
     gap: "12px",
   },
+
   title: {
     margin: 0,
     fontSize: "30px",
     lineHeight: 1,
     letterSpacing: "-0.04em",
   },
+
   subtitle: {
     margin: "6px 0 0",
     color: "#6b7280",
     fontSize: "14px",
     fontWeight: 500,
   },
+
   counter: {
     padding: "6px 10px",
     borderRadius: "999px",
@@ -93,6 +213,85 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "13px",
     fontWeight: 700,
     whiteSpace: "nowrap",
+  },
+
+  layout: {
+    width: "100%",
+    maxWidth: "1120px",
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: "240px minmax(0, 1fr)",
+    gap: "14px",
+    alignItems: "start",
+  },
+
+  sidebar: {
+    minWidth: 0,
+  },
+
+  filtersCard: {
+    position: "sticky",
+    top: "14px",
+    background: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "14px",
+    padding: "12px",
+    boxShadow: "0 8px 20px rgba(15, 23, 42, 0.06)",
+  },
+
+  filtersHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "8px",
+    marginBottom: "10px",
+  },
+
+  filtersTitle: {
+    margin: 0,
+    fontSize: "16px",
+    lineHeight: 1.2,
+    letterSpacing: "-0.03em",
+  },
+
+  resetButton: {
+    border: "none",
+    background: "transparent",
+    color: "#0369a1",
+    fontSize: "12px",
+    fontWeight: 800,
+    cursor: "pointer",
+    padding: 0,
+  },
+
+  field: {
+    display: "block",
+    marginTop: "10px",
+  },
+
+  label: {
+    display: "block",
+    marginBottom: "4px",
+    color: "#6b7280",
+    fontSize: "11px",
+    fontWeight: 800,
+    textTransform: "uppercase",
+    letterSpacing: "0.08em",
+  },
+
+  input: {
+    width: "100%",
+    border: "1px solid #d1d5db",
+    borderRadius: "10px",
+    background: "#ffffff",
+    color: "#111827",
+    padding: "9px 10px",
+    fontSize: "14px",
+    outline: "none",
+  },
+
+  results: {
+    minWidth: 0,
   },
 };
 
