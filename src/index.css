@@ -92,25 +92,16 @@ img {
   }
 
   .listings-grid {
-    max-width: none;
-    display: flex;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 14px;
-    padding: 2px 14px 18px;
-    margin-left: -14px;
-    margin-right: -14px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 14px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 120px;
   }
 
   .listings-grid > * {
-    flex: 0 0 82%;
-    scroll-snap-align: start;
-  }
-
-  .listings-grid::-webkit-scrollbar {
-    display: none;
+    width: 100%;
+    min-width: 0;
   }
 }
