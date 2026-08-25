@@ -25,6 +25,23 @@ function getSection(body: string, sectionName: string) {
   return match?.[1]?.trim() ?? "";
 }
 
+function parseImagesSection(body: string) {
+  const imagesSection =
+    getSection(body, "Images") ||
+    getSection(body, "Photos") ||
+    getSection(body, "Фото");
+
+  if (!imagesSection) {
+    return [];
+  }
+
+  return imagesSection
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .map((line) => line.replace(/^[-*]\s*/, ""))
+    .filter(Boolean);
+}
+
 export async function fetchListings() {
   const response = await fetch(`${import.meta.env.BASE_URL}data/listings.json`);
 
@@ -36,12 +53,24 @@ export async function fetchListings() {
 }
 
 export function parseListing(listing: Listing): ParsedListing {
+  const imagesFromImagesSection = parseImagesSection(listing.body);
+  const oldImage = getSection(listing.body, "Image");
+
+  const images =
+    imagesFromImagesSection.length > 0
+      ? imagesFromImagesSection
+      : oldImage
+        ? [oldImage]
+        : [];
+
   return {
     ...listing,
     description: getSection(listing.body, "Description"),
     price: getSection(listing.body, "Price"),
     contact: getSection(listing.body, "Contact"),
-    image: getSection(listing.body, "Image"),
+    image: images[0] || "",
+    images,
+    imageCount: images.length,
     city: getLabelValue(listing.labels, "city"),
     category: getLabelValue(listing.labels, "category"),
     status: getLabelValue(listing.labels, "status"),

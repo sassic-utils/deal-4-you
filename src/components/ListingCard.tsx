@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import type { ParsedListing } from "../models/listing";
 import ContactLinks from "./ContactLinks";
@@ -7,16 +7,82 @@ type ListingCardProps = {
   listing: ParsedListing;
 };
 
+function getImageUrl(image: string) {
+  if (!image) {
+    return "";
+  }
+
+  if (image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+
+  return `${import.meta.env.BASE_URL}images/${image}`;
+}
+
 function ListingCard({ listing }: ListingCardProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
-  const imageSrc = listing.image
-    ? listing.image.startsWith("http")
-      ? listing.image
-      : `${import.meta.env.BASE_URL}images/${listing.image}`
-    : "";
+  const imageUrls = useMemo(() => {
+    const sourceImages =
+      listing.images && listing.images.length > 0
+        ? listing.images
+        : listing.image
+          ? [listing.image]
+          : [];
+
+    return sourceImages.map(getImageUrl).filter(Boolean);
+  }, [listing.images, listing.image]);
+
+  const mainImageSrc = imageUrls[0] || "";
+  const currentImageSrc = imageUrls[currentImageIndex] || "";
+  const hasImages = imageUrls.length > 0;
+  const hasMultipleImages = imageUrls.length > 1;
+
+  const shouldShowMainImage =
+    Boolean(mainImageSrc) && !failedImages[mainImageSrc];
+
+  const shouldShowCurrentImage =
+    Boolean(currentImageSrc) && !failedImages[currentImageSrc];
 
   const hasDetails = Boolean(listing.description || listing.contact);
+
+  function markImageFailed(imageSrc: string) {
+    if (!imageSrc) {
+      return;
+    }
+
+    setFailedImages((current) => ({
+      ...current,
+      [imageSrc]: true,
+    }));
+  }
+
+  function showPreviousImage() {
+    if (!hasMultipleImages) {
+      return;
+    }
+
+    setCurrentImageIndex((current) =>
+      current === 0 ? imageUrls.length - 1 : current - 1
+    );
+  }
+
+  function showNextImage() {
+    if (!hasMultipleImages) {
+      return;
+    }
+
+    setCurrentImageIndex((current) =>
+      current === imageUrls.length - 1 ? 0 : current + 1
+    );
+  }
+
+  function openModal() {
+    setCurrentImageIndex(0);
+    setIsOpen(true);
+  }
 
   useEffect(() => {
     if (!isOpen) {
@@ -27,6 +93,14 @@ function ListingCard({ listing }: ListingCardProps) {
       if (event.key === "Escape") {
         setIsOpen(false);
       }
+
+      if (event.key === "ArrowLeft") {
+        showPreviousImage();
+      }
+
+      if (event.key === "ArrowRight") {
+        showNextImage();
+      }
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -36,19 +110,28 @@ function ListingCard({ listing }: ListingCardProps) {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, hasMultipleImages, imageUrls.length]);
 
   return (
     <>
       <article style={styles.card}>
         <div style={styles.imageBox}>
-          {imageSrc ? (
-            <img src={imageSrc} alt={listing.title} style={styles.image} />
+          {shouldShowMainImage ? (
+            <img
+              src={mainImageSrc}
+              alt={listing.title}
+              style={styles.image}
+              onError={() => markImageFailed(mainImageSrc)}
+            />
           ) : (
             <div style={styles.imagePlaceholder}>
               <span style={styles.imageIcon}>🖼️</span>
               <span style={styles.imageText}>Фото</span>
             </div>
+          )}
+
+          {hasMultipleImages && (
+            <div style={styles.imageCountBadge}>1 / {imageUrls.length}</div>
           )}
         </div>
 
@@ -87,11 +170,7 @@ function ListingCard({ listing }: ListingCardProps) {
 
           <div style={styles.bottom}>
             {hasDetails && (
-              <button
-                type="button"
-                style={styles.moreButton}
-                onClick={() => setIsOpen(true)}
-              >
+              <button type="button" style={styles.moreButton} onClick={openModal}>
                 Подробнее
               </button>
             )}
@@ -129,15 +208,83 @@ function ListingCard({ listing }: ListingCardProps) {
             </button>
 
             <div style={styles.modalImageBox}>
-              {imageSrc ? (
-                <img src={imageSrc} alt={listing.title} style={styles.image} />
+              {shouldShowCurrentImage ? (
+                <img
+                  src={currentImageSrc}
+                  alt={`${listing.title}, фото ${currentImageIndex + 1}`}
+                  style={styles.image}
+                  onError={() => markImageFailed(currentImageSrc)}
+                />
               ) : (
                 <div style={styles.imagePlaceholder}>
                   <span style={styles.imageIcon}>🖼️</span>
                   <span style={styles.imageText}>Фото</span>
                 </div>
               )}
+
+              {hasMultipleImages && (
+                <>
+                  <button
+                    type="button"
+                    style={{ ...styles.galleryButton, ...styles.galleryButtonLeft }}
+                    onClick={showPreviousImage}
+                    aria-label="Предыдущее фото"
+                  >
+                    ‹
+                  </button>
+
+                  <button
+                    type="button"
+                    style={{ ...styles.galleryButton, ...styles.galleryButtonRight }}
+                    onClick={showNextImage}
+                    aria-label="Следующее фото"
+                  >
+                    ›
+                  </button>
+
+                  <div style={styles.modalImageCounter}>
+                    {currentImageIndex + 1} / {imageUrls.length}
+                  </div>
+                </>
+              )}
+
+              {!hasImages && (
+                <div style={styles.modalImageCounter}>Нет фото</div>
+              )}
             </div>
+
+            {hasMultipleImages && (
+              <div style={styles.thumbnails}>
+                {imageUrls.map((imageUrl, index) => {
+                  const isActive = index === currentImageIndex;
+                  const isFailed = failedImages[imageUrl];
+
+                  return (
+                    <button
+                      key={imageUrl}
+                      type="button"
+                      style={{
+                        ...styles.thumbnailButton,
+                        ...(isActive ? styles.thumbnailButtonActive : {}),
+                      }}
+                      onClick={() => setCurrentImageIndex(index)}
+                      aria-label={`Открыть фото ${index + 1}`}
+                    >
+                      {!isFailed ? (
+                        <img
+                          src={imageUrl}
+                          alt=""
+                          style={styles.thumbnailImage}
+                          onError={() => markImageFailed(imageUrl)}
+                        />
+                      ) : (
+                        <span style={styles.thumbnailPlaceholder}>🖼️</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             <div style={styles.modalContent}>
               <h2 id={`listing-title-${listing.id}`} style={styles.modalTitle}>
@@ -201,6 +348,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   imageBox: {
+    position: "relative",
     width: "100%",
     aspectRatio: "4 / 3",
     background:
@@ -236,6 +384,19 @@ const styles: Record<string, CSSProperties> = {
   imageText: {
     fontSize: "13px",
     fontWeight: 700,
+  },
+
+  imageCountBadge: {
+    position: "absolute",
+    right: "8px",
+    bottom: "8px",
+    padding: "4px 7px",
+    borderRadius: "999px",
+    background: "rgba(15, 23, 42, 0.72)",
+    color: "#ffffff",
+    fontSize: "11px",
+    lineHeight: 1,
+    fontWeight: 800,
   },
 
   content: {
@@ -364,7 +525,7 @@ const styles: Record<string, CSSProperties> = {
     position: "absolute",
     top: "10px",
     right: "10px",
-    zIndex: 2,
+    zIndex: 3,
     width: "34px",
     height: "34px",
     borderRadius: "999px",
@@ -378,12 +539,93 @@ const styles: Record<string, CSSProperties> = {
   },
 
   modalImageBox: {
+    position: "relative",
     width: "100%",
     aspectRatio: "16 / 9",
     background:
       "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
     borderBottom: "1px solid #e5e7eb",
     overflow: "hidden",
+  },
+
+  galleryButton: {
+    position: "absolute",
+    top: "50%",
+    zIndex: 2,
+    width: "38px",
+    height: "38px",
+    transform: "translateY(-50%)",
+    borderRadius: "999px",
+    border: "1px solid rgba(255, 255, 255, 0.72)",
+    background: "rgba(15, 23, 42, 0.58)",
+    color: "#ffffff",
+    fontSize: "30px",
+    lineHeight: 1,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  galleryButtonLeft: {
+    left: "10px",
+  },
+
+  galleryButtonRight: {
+    right: "10px",
+  },
+
+  modalImageCounter: {
+    position: "absolute",
+    left: "50%",
+    bottom: "10px",
+    transform: "translateX(-50%)",
+    padding: "5px 9px",
+    borderRadius: "999px",
+    background: "rgba(15, 23, 42, 0.72)",
+    color: "#ffffff",
+    fontSize: "12px",
+    lineHeight: 1,
+    fontWeight: 800,
+  },
+
+  thumbnails: {
+    display: "flex",
+    gap: "8px",
+    padding: "10px 12px 0",
+    overflowX: "auto",
+  },
+
+  thumbnailButton: {
+    width: "58px",
+    height: "44px",
+    flex: "0 0 auto",
+    padding: 0,
+    borderRadius: "8px",
+    border: "2px solid transparent",
+    background: "#e5e7eb",
+    overflow: "hidden",
+    cursor: "pointer",
+  },
+
+  thumbnailButtonActive: {
+    borderColor: "#0284c7",
+  },
+
+  thumbnailImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    display: "block",
+  },
+
+  thumbnailPlaceholder: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "18px",
   },
 
   modalContent: {

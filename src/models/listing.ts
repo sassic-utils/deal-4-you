@@ -15,6 +15,8 @@ export type ParsedListing = Listing & {
   price: string;
   contact: string;
   image: string;
+  images: string[];
+  imageCount: number;
   city: string;
   category: string;
   status: string;
