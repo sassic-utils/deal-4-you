@@ -7,62 +7,68 @@ type ListingCardProps = {
 };
 
 function ListingCard({ listing }: ListingCardProps) {
+  const imageSrc = listing.image
+    ? listing.image.startsWith("http")
+      ? listing.image
+      : `${import.meta.env.BASE_URL}images/${listing.image}`
+    : "";
+
   return (
     <article style={styles.card}>
-      <div style={styles.imagePlaceholder}>
-        {listing.image ? (
-          <img
-            src={`${import.meta.env.BASE_URL}images/${listing.image}`}
-            alt={listing.title}
-            style={styles.image}
-          />
+      <div style={styles.imageBox}>
+        {imageSrc ? (
+          <img src={imageSrc} alt={listing.title} style={styles.image} />
         ) : (
-          <>
+          <div style={styles.imagePlaceholder}>
             <span style={styles.imageIcon}>🖼️</span>
             <span style={styles.imageText}>Фото</span>
-          </>
+          </div>
         )}
       </div>
 
       <div style={styles.content}>
-        <h2 style={styles.cardTitle} title={listing.title}>
-          {listing.title}
-        </h2>
+        <div>
+          <h2 style={styles.cardTitle} title={listing.title}>
+            {listing.title}
+          </h2>
 
-        <div style={styles.meta}>
-          {listing.city && <span style={styles.label}>📍 {listing.city}</span>}
+          <div style={styles.meta}>
+            {listing.city && (
+              <span style={styles.label}>📍 {listing.city}</span>
+            )}
 
-          {listing.category && (
-            <span style={styles.label}>🏷️ {listing.category}</span>
+            {listing.category && (
+              <span style={styles.label}>🏷️ {listing.category}</span>
+            )}
+
+            {listing.status && (
+              <span style={styles.label}>✅ {listing.status}</span>
+            )}
+          </div>
+
+          {listing.description && (
+            <section style={styles.section}>
+              <h3 style={styles.sectionTitle}>Описание</h3>
+              <p style={styles.text} title={listing.description}>
+                {listing.description}
+              </p>
+            </section>
           )}
 
-          {listing.status && (
-            <span style={styles.label}>✅ {listing.status}</span>
+          {listing.price && (
+            <section style={styles.section}>
+              <h3 style={styles.sectionTitle}>Цена</h3>
+              <p style={styles.price}>{listing.price}</p>
+            </section>
+          )}
+
+          {listing.contact && (
+            <section style={styles.section}>
+              <h3 style={styles.sectionTitle}>Контакт</h3>
+              <ContactLinks contact={listing.contact} />
+            </section>
           )}
         </div>
-
-        {listing.description && (
-          <section style={styles.section}>
-            <h3 style={styles.sectionTitle}>Описание</h3>
-            <p style={styles.text} title={listing.description}>
-              {listing.description}
-            </p>
-          </section>
-        )}
-
-        {listing.price && (
-          <section style={styles.section}>
-            <h3 style={styles.sectionTitle}>Цена</h3>
-            <p style={styles.price}>{listing.price}</p>
-          </section>
-        )}
-
-        {listing.contact && (
-          <section style={styles.section}>
-            <h3 style={styles.sectionTitle}>Контакт</h3>
-            <ContactLinks contact={listing.contact} />
-          </section>
-        )}
 
         <div style={styles.footer}>
           <span>
@@ -83,31 +89,57 @@ const styles: Record<string, CSSProperties> = {
     overflow: "hidden",
     boxShadow: "0 8px 20px rgba(15, 23, 42, 0.06)",
     minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
   },
-  imagePlaceholder: {
-    height: "72px",
+
+  imageBox: {
+    width: "100%",
+    aspectRatio: "4 / 3",
     background:
       "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
+    borderBottom: "1px solid #e5e7eb",
+    overflow: "hidden",
+    flexShrink: 0,
+  },
+
+  imagePlaceholder: {
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     color: "#64748b",
-    borderBottom: "1px solid #e5e7eb",
   },
+
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    display: "block",
+  },
+
   imageIcon: {
-    fontSize: "22px",
+    fontSize: "28px",
     lineHeight: 1,
-    marginBottom: "2px",
+    marginBottom: "6px",
   },
+
   imageText: {
-    fontSize: "11px",
+    fontSize: "13px",
     fontWeight: 700,
   },
+
   content: {
     padding: "10px",
     minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
   },
+
   cardTitle: {
     margin: 0,
     fontSize: "16px",
@@ -118,12 +150,14 @@ const styles: Record<string, CSSProperties> = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+
   meta: {
     display: "flex",
     flexWrap: "wrap",
     gap: "4px",
     marginTop: "8px",
   },
+
   label: {
     maxWidth: "100%",
     padding: "3px 7px",
@@ -137,9 +171,11 @@ const styles: Record<string, CSSProperties> = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+
   section: {
     marginTop: "8px",
   },
+
   sectionTitle: {
     margin: "0 0 3px",
     fontSize: "10px",
@@ -148,6 +184,7 @@ const styles: Record<string, CSSProperties> = {
     letterSpacing: "0.08em",
     color: "#9ca3af",
   },
+
   text: {
     margin: 0,
     color: "#374151",
@@ -157,6 +194,7 @@ const styles: Record<string, CSSProperties> = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+
   price: {
     margin: 0,
     color: "#111827",
@@ -164,20 +202,15 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.1,
     fontSize: "18px",
   },
+
   footer: {
-    marginTop: "9px",
+    marginTop: "auto",
     paddingTop: "7px",
     borderTop: "1px solid #e5e7eb",
     color: "#6b7280",
     fontSize: "11px",
     lineHeight: 1.2,
     fontWeight: 700,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    display: "block",
   },
 };
 
