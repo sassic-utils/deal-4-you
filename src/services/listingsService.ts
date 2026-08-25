@@ -25,21 +25,37 @@ function getSection(body: string, sectionName: string) {
   return match?.[1]?.trim() ?? "";
 }
 
+function parseImagesText(imagesSection: string) {
+  return imagesSection
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .map((line) => line.replace(/^[-*]\s*/, ""))
+    .map((line) => {
+      // Markdown image: ![alt](image.jpg)
+      const markdownImageMatch = line.match(/!\[[^\]]*]\(([^)]+)\)/);
+
+      if (markdownImageMatch?.[1]) {
+        return markdownImageMatch[1].trim();
+      }
+
+      return line;
+    })
+    .filter(Boolean);
+}
+
 function parseImagesSection(body: string) {
   const imagesSection =
     getSection(body, "Images") ||
+    getSection(body, "Image") ||
     getSection(body, "Photos") ||
+    getSection(body, "Photo") ||
     getSection(body, "Фото");
 
   if (!imagesSection) {
     return [];
   }
 
-  return imagesSection
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .map((line) => line.replace(/^[-*]\s*/, ""))
-    .filter(Boolean);
+  return parseImagesText(imagesSection);
 }
 
 export async function fetchListings() {
@@ -53,15 +69,7 @@ export async function fetchListings() {
 }
 
 export function parseListing(listing: Listing): ParsedListing {
-  const imagesFromImagesSection = parseImagesSection(listing.body);
-  const oldImage = getSection(listing.body, "Image");
-
-  const images =
-    imagesFromImagesSection.length > 0
-      ? imagesFromImagesSection
-      : oldImage
-        ? [oldImage]
-        : [];
+  const images = parseImagesSection(listing.body);
 
   return {
     ...listing,
