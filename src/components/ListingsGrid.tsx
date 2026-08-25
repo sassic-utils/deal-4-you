@@ -18,11 +18,11 @@ function ListingsGrid({ listings }: ListingsGridProps) {
 
 const styles: Record<string, CSSProperties> = {
   grid: {
-    maxWidth: "1440px",
+    maxWidth: "1024px",
     margin: "0 auto",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-    gap: "24px",
+    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+    gap: "10px",
   },
 };
 

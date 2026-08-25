@@ -58,39 +58,41 @@ function HomePage() {
 const styles: Record<string, CSSProperties> = {
   page: {
     minHeight: "100vh",
-    padding: "48px",
+    padding: "14px",
     fontFamily:
       'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     background: "#f3f4f6",
     color: "#111827",
   },
   header: {
-    maxWidth: "1440px",
-    margin: "0 auto 36px",
+    maxWidth: "1024px",
+    margin: "0 auto 12px",
     display: "flex",
     alignItems: "flex-end",
     justifyContent: "space-between",
-    gap: "24px",
+    gap: "12px",
   },
   title: {
     margin: 0,
-    fontSize: "56px",
+    fontSize: "30px",
     lineHeight: 1,
     letterSpacing: "-0.04em",
   },
   subtitle: {
-    margin: "18px 0 0",
+    margin: "6px 0 0",
     color: "#6b7280",
-    fontSize: "24px",
+    fontSize: "14px",
     fontWeight: 500,
   },
   counter: {
-    padding: "10px 16px",
+    padding: "6px 10px",
     borderRadius: "999px",
     background: "#ffffff",
     border: "1px solid #e5e7eb",
     color: "#6b7280",
+    fontSize: "13px",
     fontWeight: 700,
+    whiteSpace: "nowrap",
   },
 };
 
