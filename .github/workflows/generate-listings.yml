@@ -16,18 +16,25 @@ permissions:
   contents: write
   issues: read
 
+concurrency:
+  group: generate-listings
+  cancel-in-progress: false
+
 jobs:
   generate-listings:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -40,11 +47,12 @@ jobs:
 
       - name: Commit listings.json if changed
         run: |
-          if git diff --quiet public/data/listings.json; then
+          if [ -z "$(git status --porcelain public/data/listings.json)" ]; then
             echo "No changes in public/data/listings.json"
           else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
+
             git add public/data/listings.json
             git commit -m "Update listings.json"
             git push
