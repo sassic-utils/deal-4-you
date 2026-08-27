@@ -1,5 +1,20 @@
 [
   {
+    "id": 5265323778,
+    "number": 9,
+    "title": "Игра Ghost of Tsushima PS5",
+    "body": "## Description\n\nСостояние идеальное. Игра на русском. Без торга. Почтой не отправляю. Забирать в районе Академии Наук.\n\n## Image\n\n00009-image-01.jpg\n\n## Price\n\n130 BYN\n\n## Contact\n\nViber: https://viber.click/%2B375296088677",
+    "state": "open",
+    "labels": [
+      "status:активно",
+      "category:развлечения",
+      "city:Минск"
+    ],
+    "url": "https://github.com/sassic-utils/deal-4-you/issues/9",
+    "createdAt": "2026-08-27T08:04:57Z",
+    "updatedAt": "2026-08-27T08:04:57Z"
+  },
+  {
     "id": 5265289456,
     "number": 8,
     "title": "MacBook Pro 2016 15\"",
@@ -20,9 +35,13 @@
     "title": "Телевизор LG55CXRLA",
     "body": "## Description\n\nТелевизор OLED 55 дюймов. Состояние идеальное.  Не бит, не крашен, в ремонте не был. Практически не использовался, можно проверить по технологическому меню. Есть коробка оригинальная для транспортировки.\n\n## Image\n\n00007-image-01.jpg\n00007-image-02.jpg\n00007-image-03.jpg\n00007-image-04.jpg\n00007-image-05.jpg\n\n## Price\n\n3200 BYN\n\n## Contact\n\nTelegram: @andrei_kuzniatsou\nViber: https://viber.click/%2B375336970070",
     "state": "open",
-    "labels": [],
+    "labels": [
+      "category:электроника",
+      "city:Витебск",
+      "status:активно"
+    ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/7",
     "createdAt": "2026-08-27T07:55:32Z",
-    "updatedAt": "2026-08-27T07:55:48Z"
+    "updatedAt": "2026-08-27T08:01:16Z"
   }
 ]
