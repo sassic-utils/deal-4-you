@@ -10,13 +10,23 @@ import NoticePanel from "../components/NoticePanel";
 import DonatePanel from "../components/DonatePanel";
 import Filters from "../components/Filters";
 import { usePathname } from "../hooks/usePathname";
-import { navigate } from "../router";
+import { buildHref, getPathname, navigate } from "../router";
 
 const LISTING_PATH_PATTERN = /^\/listing\/(\d+)$/;
 
 function getActiveListingNumber(pathname: string) {
   const match = pathname.match(LISTING_PATH_PATTERN);
   return match ? Number(match[1]) : null;
+}
+
+function getFiltersFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    search: params.get("q") ?? "",
+    city: params.get("city") ?? "",
+    category: params.get("category") ?? "",
+  };
 }
 
 function getImageUrl(image: string) {
@@ -36,13 +46,48 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
-  const [category, setCategory] = useState("");
+  const [search, setSearch] = useState(() => getFiltersFromUrl().search);
+  const [city, setCity] = useState(() => getFiltersFromUrl().city);
+  const [category, setCategory] = useState(() => getFiltersFromUrl().category);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const pathname = usePathname();
   const activeListingNumber = getActiveListingNumber(pathname);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (search) params.set("q", search);
+    if (city) params.set("city", city);
+    if (category) params.set("category", category);
+
+    const queryString = params.toString();
+    const url = buildHref("/") + (queryString ? `?${queryString}` : "");
+
+    window.history.replaceState({}, "", url);
+  }, [search, city, category, pathname]);
+
+  useEffect(() => {
+    function handlePopState() {
+      if (getPathname() !== "/") {
+        return;
+      }
+
+      const filters = getFiltersFromUrl();
+      setSearch(filters.search);
+      setCity(filters.city);
+      setCategory(filters.category);
+    }
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   useEffect(() => {
     async function loadListings() {
@@ -135,7 +180,13 @@ function HomePage() {
   }
 
   function closeActiveListing() {
-    navigate("/");
+    const params = new URLSearchParams();
+    if (search) params.set("q", search);
+    if (city) params.set("city", city);
+    if (category) params.set("category", category);
+
+    const queryString = params.toString();
+    navigate("/" + (queryString ? `?${queryString}` : ""));
   }
 
   return (

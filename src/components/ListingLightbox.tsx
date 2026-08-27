@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, TouchEvent } from "react";
 import type { ParsedListing } from "../models/listing";
 import ContactLinks from "./ContactLinks";
 import Modal from "./Modal";
@@ -60,6 +60,33 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
     );
   }
 
+  const touchStartX = useRef<number | null>(null);
+  const SWIPE_THRESHOLD_PX = 40;
+
+  function handleTouchStart(event: TouchEvent<HTMLDivElement>) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function handleTouchEnd(event: TouchEvent<HTMLDivElement>) {
+    if (touchStartX.current === null) {
+      return;
+    }
+
+    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+    const deltaX = endX - touchStartX.current;
+    touchStartX.current = null;
+
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX) {
+      return;
+    }
+
+    if (deltaX > 0) {
+      showPreviousImage();
+    } else {
+      showNextImage();
+    }
+  }
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "ArrowLeft") {
@@ -85,7 +112,11 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
       modalStyle={styles.modal}
       closeButtonStyle={styles.closeButton}
     >
-      <div style={styles.modalImageBox}>
+      <div
+        style={styles.modalImageBox}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {shouldShowCurrentImage ? (
           <img
             src={currentImageSrc}
