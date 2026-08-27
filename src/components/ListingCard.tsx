@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import type { ParsedListing } from "../models/listing";
-import ListingLightbox from "./ListingLightbox";
+import Link from "./Link";
 
 type ListingCardProps = {
   listing: ParsedListing;
@@ -20,7 +20,6 @@ function getImageUrl(image: string) {
 }
 
 function ListingCard({ listing }: ListingCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [mainImageFailed, setMainImageFailed] = useState(false);
 
   const imageUrls = useMemo(() => {
@@ -40,81 +39,67 @@ function ListingCard({ listing }: ListingCardProps) {
   const hasDetails = Boolean(listing.description || listing.contact);
 
   return (
-    <>
-      <article style={styles.card}>
-        <div style={styles.imageBox}>
-          {shouldShowMainImage ? (
-            <img
-              src={mainImageSrc}
-              alt={listing.title}
-              style={styles.image}
-              onError={() => setMainImageFailed(true)}
-            />
-          ) : (
-            <div style={styles.imagePlaceholder}>
-              <span style={styles.imageIcon}>🖼️</span>
-              <span style={styles.imageText}>Фото</span>
-            </div>
-          )}
+    <article style={styles.card}>
+      <div style={styles.imageBox}>
+        {shouldShowMainImage ? (
+          <img
+            src={mainImageSrc}
+            alt={listing.title}
+            style={styles.image}
+            onError={() => setMainImageFailed(true)}
+          />
+        ) : (
+          <div style={styles.imagePlaceholder}>
+            <span style={styles.imageIcon}>🖼️</span>
+            <span style={styles.imageText}>Фото</span>
+          </div>
+        )}
 
-          {hasMultipleImages && (
-            <div style={styles.imageCountBadge}>1 / {imageUrls.length}</div>
-          )}
-        </div>
+        {hasMultipleImages && (
+          <div style={styles.imageCountBadge}>1 / {imageUrls.length}</div>
+        )}
+      </div>
 
-        <div style={styles.content}>
-          <div>
-            <h2 style={styles.cardTitle} title={listing.title}>
-              {listing.title}
-            </h2>
+      <div style={styles.content}>
+        <div>
+          <h2 style={styles.cardTitle} title={listing.title}>
+            {listing.title}
+          </h2>
 
-            <div style={styles.meta}>
-              {listing.city && (
-                <span style={styles.label}>📍 {listing.city}</span>
-              )}
+          <div style={styles.meta}>
+            {listing.city && (
+              <span style={styles.label}>📍 {listing.city}</span>
+            )}
 
-              {listing.category && (
-                <span style={styles.label}>🏷️ {listing.category}</span>
-              )}
-            </div>
-
-            {listing.price && (
-              <section style={styles.section}>
-                <h3 style={styles.sectionTitle}>Цена</h3>
-                <p style={styles.price}>{listing.price}</p>
-              </section>
+            {listing.category && (
+              <span style={styles.label}>🏷️ {listing.category}</span>
             )}
           </div>
 
-          <div style={styles.bottom}>
-            {hasDetails && (
-              <button
-                type="button"
-                style={styles.moreButton}
-                onClick={() => setIsOpen(true)}
-              >
-                Подробнее
-              </button>
-            )}
+          {listing.price && (
+            <section style={styles.section}>
+              <h3 style={styles.sectionTitle}>Цена</h3>
+              <p style={styles.price}>{listing.price}</p>
+            </section>
+          )}
+        </div>
 
-            <div style={styles.footer}>
-              <span>
-                Обновлено:{" "}
-                {new Date(listing.updatedAt).toLocaleDateString("ru-RU")}
-              </span>
-            </div>
+        <div style={styles.bottom}>
+          {hasDetails && (
+            <Link to={`/listing/${listing.number}`} style={styles.moreButton}>
+              Подробнее
+            </Link>
+          )}
+
+          <div style={styles.footer}>
+            <span>
+              Обновлено:{" "}
+              {new Date(listing.updatedAt).toLocaleDateString("ru-RU")}
+            </span>
           </div>
         </div>
-      </article>
-
-      {isOpen && (
-        <ListingLightbox
-          listing={listing}
-          imageUrls={imageUrls}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
-    </>
+      </div>
+    </article>
   );
 }
 
@@ -254,7 +239,9 @@ const styles: Record<string, CSSProperties> = {
   },
 
   moreButton: {
+    display: "block",
     width: "100%",
+    boxSizing: "border-box",
     border: "1px solid #bae6fd",
     background: "#f0f9ff",
     color: "#0369a1",
@@ -263,6 +250,8 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "13px",
     lineHeight: 1.2,
     fontWeight: 800,
+    textAlign: "center",
+    textDecoration: "none",
     cursor: "pointer",
     marginBottom: "8px",
   },

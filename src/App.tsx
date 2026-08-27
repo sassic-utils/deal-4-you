@@ -1,31 +1,22 @@
-import { useEffect, useState } from "react";
 import HomePage from "./pages/HomePage";
 import DonatePage from "./pages/DonatePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import { usePathname } from "./hooks/usePathname";
 
-function getRoute() {
-  return window.location.hash || "#/";
-}
+const LISTING_PATH_PATTERN = /^\/listing\/\d+$/;
 
 function App() {
-  const [route, setRoute] = useState(getRoute());
+  const pathname = usePathname();
 
-  useEffect(() => {
-    function handleHashChange() {
-      setRoute(getRoute());
-    }
-
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, []);
-
-  if (route === "#/donate") {
+  if (pathname === "/donate") {
     return <DonatePage />;
   }
 
-  return <HomePage />;
+  if (pathname === "/" || LISTING_PATH_PATTERN.test(pathname)) {
+    return <HomePage />;
+  }
+
+  return <NotFoundPage />;
 }
 
 export default App;

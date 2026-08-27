@@ -2,11 +2,33 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import ListingsGrid from "../components/ListingsGrid";
 import StatusMessage from "../components/StatusMessage";
+import ListingLightbox from "../components/ListingLightbox";
 import type { Listing } from "../models/listing";
 import { fetchListings, parseListings } from "../services/listingsService";
 import NoticePanel from "../components/NoticePanel";
 import DonatePanel from "../components/DonatePanel";
 import Filters from "../components/Filters";
+import { usePathname } from "../hooks/usePathname";
+import { navigate } from "../router";
+
+const LISTING_PATH_PATTERN = /^\/listing\/(\d+)$/;
+
+function getActiveListingNumber(pathname: string) {
+  const match = pathname.match(LISTING_PATH_PATTERN);
+  return match ? Number(match[1]) : null;
+}
+
+function getImageUrl(image: string) {
+  if (!image) {
+    return "";
+  }
+
+  if (image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+
+  return `${import.meta.env.BASE_URL}images/${image}`;
+}
 
 function HomePage() {
   const [listings, setListings] = useState<Listing[]>([]);
@@ -16,6 +38,9 @@ function HomePage() {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [category, setCategory] = useState("");
+
+  const pathname = usePathname();
+  const activeListingNumber = getActiveListingNumber(pathname);
 
   useEffect(() => {
     async function loadListings() {
@@ -74,10 +99,40 @@ function HomePage() {
 
   const hasActiveFilters = Boolean(search || city || category);
 
+  const activeListing = useMemo(() => {
+    if (activeListingNumber === null) {
+      return null;
+    }
+
+    return (
+      parsedListings.find((listing) => listing.number === activeListingNumber) ??
+      null
+    );
+  }, [parsedListings, activeListingNumber]);
+
+  const activeListingImageUrls = useMemo(() => {
+    if (!activeListing) {
+      return [];
+    }
+
+    const sourceImages =
+      activeListing.images && activeListing.images.length > 0
+        ? activeListing.images
+        : activeListing.image
+          ? [activeListing.image]
+          : [];
+
+    return sourceImages.map(getImageUrl).filter(Boolean);
+  }, [activeListing]);
+
   function resetFilters() {
     setSearch("");
     setCity("");
     setCategory("");
+  }
+
+  function closeActiveListing() {
+    navigate("/");
   }
 
   return (
@@ -131,6 +186,14 @@ function HomePage() {
           </div>
         )}
       </div>
+
+      {activeListing && (
+        <ListingLightbox
+          listing={activeListing}
+          imageUrls={activeListingImageUrls}
+          onClose={closeActiveListing}
+        />
+      )}
     </main>
   );
 }

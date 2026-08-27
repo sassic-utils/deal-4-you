@@ -1,13 +1,14 @@
 import type { CSSProperties } from "react";
+import Link from "../components/Link";
 
 function DonatePage() {
   return (
     <main style={styles.page}>
       <div className="page-container">
         <header style={styles.header}>
-          <a href="#/" style={styles.backLink}>
+          <Link to="/" style={styles.backLink}>
             ← Назад к объявлениям
-          </a>
+          </Link>
 
           <h1 style={styles.title}>Поддержать проект</h1>
 

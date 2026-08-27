@@ -28,7 +28,13 @@ React SPA (Vite) читает listings.json и парсит поля на кли
 - `src/services/listingsService.ts` — на клиенте разбирает `body` по секциям
   `## Description`, `## Price`, `## Contact`, `## Images`/`Photos`/`Фото`, и достаёт
   город/категорию/статус из labels вида `city:berlin`, `category:electronics`, `status:active`.
-- `src/App.tsx` — простой роутинг по `location.hash`: `#/` → `HomePage`, `#/donate` → `DonatePage`.
+- `src/App.tsx` + `src/router.ts` — самописный роутинг по реальным путям (`history.pushState`,
+  без React Router): `/` и `/listing/:number` → `HomePage` (второй открывает объявление в
+  модалке и обновляет `document.title`), `/donate` → `DonatePage`, всё остальное → `NotFoundPage`.
+  `public/404.html` + скрипт в `index.html` — стандартный трюк
+  [spa-github-pages](https://github.com/rafgraph/spa-github-pages) для GitHub Pages: прямой
+  заход на `/listing/152` (без единой точки входа на сервере) редиректит через `404.html`
+  обратно в `index.html` с восстановлением пути.
 
 ## Формат объявления (GitHub Issue)
 

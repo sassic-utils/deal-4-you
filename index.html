@@ -9,6 +9,37 @@
     name="description"
     content="Бесплатная доска объявлений с ручной модерацией."
   />
+  <link rel="canonical" href="https://sassic-utils.github.io/deal-4-you/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free Board" />
+  <meta
+    property="og:description"
+    content="Бесплатная доска объявлений с ручной модерацией."
+  />
+  <meta property="og:url" content="https://sassic-utils.github.io/deal-4-you/" />
+
+  <script type="text/javascript">
+    // Decodes the URL redirected by 404.html back into a real path.
+    // Pair of github.com/rafgraph/spa-github-pages
+    (function (l) {
+      if (l.search[1] === "/") {
+        var decoded = l.search
+          .slice(1)
+          .split("&")
+          .map(function (s) {
+            return s.replace(/~and~/g, "&");
+          })
+          .join("?");
+
+        window.history.replaceState(
+          null,
+          "",
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    })(window.location);
+  </script>
 </head>
 
 <body>

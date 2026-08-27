@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { useIsMobile } from "../hooks/useIsMobile";
+import Link from "./Link";
 
 function DonatePanel() {
   const isMobile = useIsMobile();
@@ -15,9 +16,9 @@ function DonatePanel() {
         Если сайт полезен — поддержите проект ❤️
       </span>
 
-      <a href="#/donate" style={styles.button}>
+      <Link to="/donate" style={styles.button}>
         Поддержать
-      </a>
+      </Link>
     </section>
   );
 }
