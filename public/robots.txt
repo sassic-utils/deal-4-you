@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sassic-utils.github.io/deal-4-you/sitemap.xml
