@@ -1,25 +1,5 @@
-import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
-
-function useIsMobile(maxWidth = 640) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= maxWidth);
-    };
-
-    checkIsMobile();
-
-    window.addEventListener("resize", checkIsMobile);
-
-    return () => {
-      window.removeEventListener("resize", checkIsMobile);
-    };
-  }, [maxWidth]);
-
-  return isMobile;
-}
+import { useIsMobile } from "../hooks/useIsMobile";
 
 function DonatePanel() {
   const isMobile = useIsMobile();
