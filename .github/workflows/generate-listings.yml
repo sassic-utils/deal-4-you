@@ -48,18 +48,18 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: npm run generate:listings
 
-      - name: Commit listings.json and sitemap.xml if changed
+      - name: Commit listings.json, sitemap.xml and images if changed
         run: |
-          if [ -z "$(git status --porcelain public/data/listings.json public/sitemap.xml)" ]; then
-            echo "No changes in public/data/listings.json or public/sitemap.xml"
+          if [ -z "$(git status --porcelain public/data/listings.json public/sitemap.xml public/images)" ]; then
+            echo "No changes in public/data/listings.json, public/sitemap.xml or public/images"
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add public/data/listings.json public/sitemap.xml
-          git commit -m "Update listings.json and sitemap.xml"
+          git add public/data/listings.json public/sitemap.xml public/images
+          git commit -m "Update listings.json, sitemap.xml and images"
 
           for i in 1 2 3; do
             echo "Push attempt $i"

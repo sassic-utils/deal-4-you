@@ -43,7 +43,7 @@ function parseImagesText(imagesSection: string) {
     .filter(Boolean);
 }
 
-function parseImagesSection(body: string) {
+export function parseImagesSection(body: string) {
   const imagesSection =
     getSection(body, "Images") ||
     getSection(body, "Image") ||

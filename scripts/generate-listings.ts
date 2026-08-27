@@ -1,7 +1,77 @@
 import { Octokit } from '@octokit/rest'
 import fs from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { Listing } from '../src/models/listing'
+import { parseImagesSection } from '../src/services/listingsService'
+
+const IMAGES_DIR = path.join(process.cwd(), 'public', 'images')
+
+const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp',
+  'image/gif': '.gif',
+  'image/avif': '.avif',
+}
+
+function guessExtensionFromUrl(url: string) {
+  const pathname = new URL(url).pathname
+  const ext = path.extname(pathname).toLowerCase()
+
+  return /^\.(jpe?g|png|webp|gif|avif)$/.test(ext) ? ext.replace('jpeg', 'jpg') : ''
+}
+
+async function localizeIssueImages(issueNumber: number, body: string) {
+  const imageEntries = parseImagesSection(body)
+  const remoteImages = imageEntries.filter((entry) => entry.startsWith('http'))
+
+  if (remoteImages.length === 0) {
+    return body
+  }
+
+  await fs.mkdir(IMAGES_DIR, { recursive: true })
+
+  let updatedBody = body
+
+  for (let index = 0; index < remoteImages.length; index += 1) {
+    const url = remoteImages[index]
+    const paddedIssue = String(issueNumber).padStart(5, '0')
+    const paddedIndex = String(index + 1).padStart(2, '0')
+    const baseName = `${paddedIssue}-image-${paddedIndex}`
+
+    const existingFile = existsSync(IMAGES_DIR)
+      ? (await fs.readdir(IMAGES_DIR)).find((file) => file.startsWith(`${baseName}.`))
+      : undefined
+
+    if (existingFile) {
+      updatedBody = updatedBody.split(url).join(existingFile)
+      continue
+    }
+
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      console.warn(`Failed to download image ${url}: ${response.status}`)
+      continue
+    }
+
+    const contentType = response.headers.get('content-type') ?? ''
+    const extension =
+      EXTENSION_BY_CONTENT_TYPE[contentType] || guessExtensionFromUrl(url) || '.jpg'
+    const fileName = `${baseName}${extension}`
+    const filePath = path.join(IMAGES_DIR, fileName)
+
+    const buffer = Buffer.from(await response.arrayBuffer())
+    await fs.writeFile(filePath, buffer)
+
+    console.log(`Saved image: ${fileName}`)
+
+    updatedBody = updatedBody.split(url).join(fileName)
+  }
+
+  return updatedBody
+}
 
 const token = process.env.GITHUB_TOKEN
 const repository = process.env.GITHUB_REPOSITORY
@@ -32,13 +102,17 @@ async function main() {
     per_page: 100,
   })
 
-  const listings: Listing[] = issues
-    .filter((issue) => !issue.pull_request)
-    .map((issue) => ({
+  const openIssues = issues.filter((issue) => !issue.pull_request)
+  const listings: Listing[] = []
+
+  for (const issue of openIssues) {
+    const body = await localizeIssueImages(issue.number, issue.body ?? '')
+
+    listings.push({
       id: issue.id,
       number: issue.number,
       title: issue.title,
-      body: issue.body ?? '',
+      body,
       state: issue.state,
       labels: issue.labels.map((label) => {
         if (typeof label === 'string') {
@@ -50,7 +124,8 @@ async function main() {
       url: issue.html_url,
       createdAt: issue.created_at,
       updatedAt: issue.updated_at,
-    }))
+    })
+  }
 
   const outputPath = path.join(
     process.cwd(),
