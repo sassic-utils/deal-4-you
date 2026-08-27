@@ -1,18 +1,7 @@
 import { Octokit } from '@octokit/rest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-
-type Listing = {
-  id: number
-  number: number
-  title: string
-  body: string
-  state: string
-  labels: string[]
-  url: string
-  createdAt: string
-  updatedAt: string
-}
+import type { Listing } from '../src/models/listing'
 
 const token = process.env.GITHUB_TOKEN
 const repository = process.env.GITHUB_REPOSITORY
