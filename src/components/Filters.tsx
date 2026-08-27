@@ -91,11 +91,11 @@ function Filters({
 
 const styles: Record<string, CSSProperties> = {
   filtersCard: {
-    background: "#ffffff",
-    border: "1px solid #e5e7eb",
+    background: "var(--card)",
+    border: "1px solid var(--line)",
     borderRadius: "14px",
     padding: "12px",
-    boxShadow: "0 8px 20px rgba(15, 23, 42, 0.06)",
+    boxShadow: "var(--shadow)",
   },
 
   filtersTitle: {
@@ -103,12 +103,13 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "16px",
     lineHeight: 1.2,
     letterSpacing: "-0.03em",
+    color: "var(--ink)",
   },
 
   resetButton: {
     border: "none",
     background: "transparent",
-    color: "#0369a1",
+    color: "var(--accent)",
     fontSize: "12px",
     fontWeight: 800,
     cursor: "pointer",
@@ -123,7 +124,7 @@ const styles: Record<string, CSSProperties> = {
   label: {
     display: "block",
     marginBottom: "4px",
-    color: "#6b7280",
+    color: "var(--ink-faint)",
     fontSize: "11px",
     fontWeight: 800,
     textTransform: "uppercase",
@@ -132,10 +133,10 @@ const styles: Record<string, CSSProperties> = {
 
   input: {
     width: "100%",
-    border: "1px solid #d1d5db",
+    border: "1px solid var(--line)",
     borderRadius: "10px",
-    background: "#ffffff",
-    color: "#111827",
+    background: "var(--paper)",
+    color: "var(--ink)",
     padding: "9px 10px",
     fontSize: "14px",
     outline: "none",

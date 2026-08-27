@@ -23,14 +23,15 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "1440px",
     margin: "24px auto",
     padding: "16px",
-    background: "#ffffff",
+    background: "var(--card)",
+    color: "var(--ink-soft)",
     borderRadius: "12px",
-    border: "1px solid #e5e7eb",
+    border: "1px solid var(--line)",
   },
   error: {
     color: "#b91c1c",
     borderColor: "#fecaca",
-    background: "#fef2f2",
+    background: "color-mix(in srgb, #b91c1c 8%, var(--card))",
   },
 };
 

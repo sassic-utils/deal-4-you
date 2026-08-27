@@ -78,9 +78,9 @@ const styles: Record<string, CSSProperties> = {
     minHeight: "100vh",
     padding: "14px",
     fontFamily:
-      'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    background: "#f3f4f6",
-    color: "#111827",
+      '-apple-system, "Helvetica Neue", Arial, sans-serif',
+    background: "var(--paper)",
+    color: "var(--ink)",
   },
 
   header: {
@@ -90,7 +90,7 @@ const styles: Record<string, CSSProperties> = {
   backLink: {
     display: "inline-flex",
     marginBottom: "12px",
-    color: "#2563eb",
+    color: "var(--accent)",
     fontSize: "14px",
     fontWeight: 800,
     textDecoration: "none",
@@ -106,7 +106,7 @@ const styles: Record<string, CSSProperties> = {
   subtitle: {
     maxWidth: "680px",
     margin: "8px 0 0",
-    color: "#6b7280",
+    color: "var(--ink-soft)",
     fontSize: "15px",
     fontWeight: 500,
     lineHeight: 1.5,
@@ -120,10 +120,10 @@ const styles: Record<string, CSSProperties> = {
 
   card: {
     padding: "16px",
-    borderRadius: "18px",
-    background: "#ffffff",
-    border: "1px solid #e5e7eb",
-    boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
+    borderRadius: "14px",
+    background: "var(--card)",
+    border: "1px solid var(--line)",
+    boxShadow: "var(--shadow)",
   },
 
   icon: {
@@ -133,8 +133,8 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     marginBottom: "12px",
-    borderRadius: "14px",
-    background: "#fff7ed",
+    borderRadius: "10px",
+    background: "color-mix(in srgb, var(--accent) 12%, var(--card))",
     fontSize: "24px",
   },
 
@@ -148,7 +148,7 @@ const styles: Record<string, CSSProperties> = {
   cardText: {
     minHeight: "48px",
     margin: "8px 0 14px",
-    color: "#4b5563",
+    color: "var(--ink-soft)",
     fontSize: "14px",
     lineHeight: 1.45,
   },
@@ -156,10 +156,10 @@ const styles: Record<string, CSSProperties> = {
   disabledButton: {
     width: "100%",
     padding: "9px 12px",
-    border: "1px solid #e5e7eb",
+    border: "1px solid var(--line)",
     borderRadius: "999px",
-    background: "#f3f4f6",
-    color: "#9ca3af",
+    background: "var(--paper)",
+    color: "var(--ink-faint)",
     fontSize: "13px",
     fontWeight: 900,
     cursor: "not-allowed",
@@ -172,12 +172,12 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "center",
     padding: "9px 12px",
     borderRadius: "999px",
-    background: "#ea580c",
-    color: "#ffffff",
+    background: "var(--accent)",
+    color: "var(--accent-ink)",
     fontSize: "13px",
     fontWeight: 900,
     textDecoration: "none",
-    boxShadow: "0 6px 14px rgba(234, 88, 12, 0.22)",
+    boxShadow: "0 6px 14px color-mix(in srgb, var(--accent) 30%, transparent)",
   },
 };
 

@@ -220,7 +220,7 @@ const styles: Record<string, CSSProperties> = {
 
   text: {
     margin: 0,
-    color: "#374151",
+    color: "var(--ink-soft)",
     whiteSpace: "pre-wrap",
     lineHeight: 1.3,
     fontSize: "13px",

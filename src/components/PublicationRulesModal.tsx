@@ -108,14 +108,14 @@ const styles: Record<string, CSSProperties> = {
     padding: "5px 10px",
     borderRadius: "999px",
     border: "none",
-    background: "#2563eb",
-    color: "#ffffff",
+    background: "var(--accent)",
+    color: "var(--accent-ink)",
     fontSize: "12px",
     fontWeight: 900,
     lineHeight: 1.2,
     cursor: "pointer",
     whiteSpace: "nowrap",
-    boxShadow: "0 4px 10px rgba(37, 99, 235, 0.18)",
+    boxShadow: "0 4px 10px color-mix(in srgb, var(--accent) 35%, transparent)",
   },
 
   header: {
@@ -123,14 +123,14 @@ const styles: Record<string, CSSProperties> = {
     gap: "12px",
     alignItems: "flex-start",
     padding: "22px 22px 14px",
-    borderBottom: "1px solid #e5e7eb",
+    borderBottom: "1px solid var(--line)",
   },
 
   icon: {
     width: "42px",
     height: "42px",
     borderRadius: "14px",
-    background: "#eff6ff",
+    background: "color-mix(in srgb, var(--accent) 12%, var(--card))",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -141,7 +141,7 @@ const styles: Record<string, CSSProperties> = {
   title: {
     margin: 0,
     paddingRight: "40px",
-    color: "#111827",
+    color: "var(--ink)",
     fontSize: "26px",
     lineHeight: 1.1,
     letterSpacing: "-0.04em",
@@ -149,7 +149,7 @@ const styles: Record<string, CSSProperties> = {
 
   subtitle: {
     margin: "6px 0 0",
-    color: "#6b7280",
+    color: "var(--ink-soft)",
     fontSize: "15px",
     lineHeight: 1.35,
   },
@@ -164,7 +164,7 @@ const styles: Record<string, CSSProperties> = {
 
   sectionTitle: {
     margin: "0 0 8px",
-    color: "#111827",
+    color: "var(--ink)",
     fontSize: "17px",
     lineHeight: 1.2,
   },
@@ -172,7 +172,7 @@ const styles: Record<string, CSSProperties> = {
   list: {
     margin: 0,
     paddingLeft: "22px",
-    color: "#374151",
+    color: "var(--ink-soft)",
     fontSize: "15px",
     lineHeight: 1.5,
   },
@@ -181,20 +181,20 @@ const styles: Record<string, CSSProperties> = {
     marginTop: "18px",
     padding: "14px 16px",
     borderRadius: "16px",
-    background: "#fff7ed",
-    border: "1px solid #fed7aa",
+    background: "color-mix(in srgb, #d97706 12%, var(--card))",
+    border: "1px solid color-mix(in srgb, #d97706 35%, var(--line))",
   },
 
   warningTitle: {
     margin: "0 0 6px",
-    color: "#9a3412",
+    color: "#b45309",
     fontSize: "16px",
     lineHeight: 1.2,
   },
 
   warningText: {
     margin: 0,
-    color: "#7c2d12",
+    color: "var(--ink-soft)",
     fontSize: "14px",
     lineHeight: 1.45,
   },
@@ -203,13 +203,13 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     justifyContent: "flex-end",
     padding: "14px 22px 22px",
-    borderTop: "1px solid #e5e7eb",
+    borderTop: "1px solid var(--line)",
   },
 
   acceptButton: {
     border: "none",
-    background: "#2563eb",
-    color: "#ffffff",
+    background: "var(--accent)",
+    color: "var(--accent-ink)",
     borderRadius: "999px",
     padding: "12px 20px",
     fontSize: "15px",

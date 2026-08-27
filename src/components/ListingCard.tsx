@@ -39,7 +39,7 @@ function ListingCard({ listing }: ListingCardProps) {
   const hasDetails = Boolean(listing.description || listing.contact);
 
   return (
-    <article style={styles.card}>
+    <article className="card-pin" style={styles.card}>
       <div style={styles.imageBox}>
         {shouldShowMainImage ? (
           <img
@@ -105,11 +105,11 @@ function ListingCard({ listing }: ListingCardProps) {
 
 const styles: Record<string, CSSProperties> = {
   card: {
-    background: "#ffffff",
-    borderRadius: "14px",
-    border: "1px solid #e5e7eb",
+    background: "var(--card)",
+    borderRadius: "10px",
+    border: "1px solid var(--line)",
     overflow: "hidden",
-    boxShadow: "0 8px 20px rgba(15, 23, 42, 0.06)",
+    boxShadow: "var(--shadow)",
     minWidth: 0,
     display: "flex",
     flexDirection: "column",
@@ -120,8 +120,8 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     width: "100%",
     aspectRatio: "4 / 3",
-    background: "#ffffff",
-    borderBottom: "1px solid #e5e7eb",
+    background: "var(--card)",
+    borderBottom: "1px solid var(--line)",
     overflow: "hidden",
     flexShrink: 0,
     padding: "8px",
@@ -134,9 +134,8 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    color: "#64748b",
-    background:
-      "linear-gradient(135deg, #e0f2fe 0%, #f8fafc 50%, #e5e7eb 100%)",
+    color: "var(--ink-faint)",
+    background: "var(--paper)",
   },
 
   image: {
@@ -144,8 +143,8 @@ const styles: Record<string, CSSProperties> = {
     height: "100%",
     objectFit: "contain",
     display: "block",
-    background: "#ffffff",
-    borderRadius: "10px",
+    background: "var(--card)",
+    borderRadius: "6px",
   },
 
   imageIcon: {
@@ -165,7 +164,7 @@ const styles: Record<string, CSSProperties> = {
     bottom: "8px",
     padding: "4px 7px",
     borderRadius: "999px",
-    background: "rgba(15, 23, 42, 0.72)",
+    background: "rgba(10, 14, 11, 0.7)",
     color: "#ffffff",
     fontSize: "11px",
     lineHeight: 1,
@@ -185,7 +184,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "16px",
     lineHeight: 1.12,
     letterSpacing: "-0.03em",
-    color: "#111827",
+    color: "var(--ink)",
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -201,12 +200,14 @@ const styles: Record<string, CSSProperties> = {
   label: {
     maxWidth: "100%",
     padding: "3px 7px",
-    borderRadius: "999px",
-    background: "#e0f2fe",
-    color: "#075985",
-    fontSize: "11px",
+    borderRadius: "4px",
+    background: "var(--chip-bg)",
+    color: "var(--chip-ink)",
+    fontSize: "10px",
     lineHeight: 1.2,
     fontWeight: 800,
+    textTransform: "uppercase",
+    letterSpacing: "0.03em",
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -222,15 +223,16 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.1,
     textTransform: "uppercase",
     letterSpacing: "0.08em",
-    color: "#9ca3af",
+    color: "var(--ink-faint)",
   },
 
   price: {
     margin: 0,
-    color: "#111827",
+    color: "var(--ink)",
     fontWeight: 900,
     lineHeight: 1.1,
     fontSize: "18px",
+    fontVariantNumeric: "tabular-nums",
   },
 
   bottom: {
@@ -242,11 +244,11 @@ const styles: Record<string, CSSProperties> = {
     display: "block",
     width: "100%",
     boxSizing: "border-box",
-    border: "1px solid #bae6fd",
-    background: "#f0f9ff",
-    color: "#0369a1",
-    borderRadius: "10px",
-    padding: "7px 10px",
+    border: "none",
+    background: "var(--accent)",
+    color: "var(--accent-ink)",
+    borderRadius: "6px",
+    padding: "8px 10px",
     fontSize: "13px",
     lineHeight: 1.2,
     fontWeight: 800,
@@ -258,8 +260,8 @@ const styles: Record<string, CSSProperties> = {
 
   footer: {
     paddingTop: "7px",
-    borderTop: "1px solid #e5e7eb",
-    color: "#6b7280",
+    borderTop: "1px solid var(--line)",
+    color: "var(--ink-faint)",
     fontSize: "11px",
     lineHeight: 1.2,
     fontWeight: 700,
