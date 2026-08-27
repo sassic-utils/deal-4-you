@@ -53,12 +53,13 @@ html {
   margin: 0;
   padding: 0;
   background: var(--paper);
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-width: 320px;
+  overflow-x: hidden;
   background: var(--paper);
 }
 
