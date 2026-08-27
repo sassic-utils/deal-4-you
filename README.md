@@ -35,6 +35,13 @@ React SPA (Vite) читает listings.json и парсит поля на кли
   [spa-github-pages](https://github.com/rafgraph/spa-github-pages) для GitHub Pages: прямой
   заход на `/listing/152` (без единой точки входа на сервере) редиректит через `404.html`
   обратно в `index.html` с восстановлением пути.
+- `scripts/prerender-listings.ts` (запускается как `postbuild` после `vite build`) — генерирует
+  статический `dist/listing/<number>/index.html` на каждое объявление: реальный title/description/
+  OG-теги/canonical + JSON-LD (`schema.org/Product`) + видимый HTML-блок с текстом объявления
+  (`#prerendered`). Нужен для краулеров, которые **не выполняют JS** (GPTBot, ClaudeBot, CCBot и
+  большинство AI-ботов) — им иначе достаётся пустой `<div id="root"></div>`. При гидратации
+  React (`src/main.tsx`) удаляет `#prerendered` и рендерит обычный интерактивный UI поверх.
+  Главная страница (список объявлений) прероста не имеет — это следующий шаг, если понадобится.
 
 ## Формат объявления (GitHub Issue)
 
