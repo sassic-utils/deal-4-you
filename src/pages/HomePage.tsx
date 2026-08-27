@@ -9,10 +9,15 @@ import { fetchListings, parseListings } from "../services/listingsService";
 import NoticePanel from "../components/NoticePanel";
 import DonatePanel from "../components/DonatePanel";
 import Filters from "../components/Filters";
+import type { SortOption } from "../components/Filters";
 import { usePathname } from "../hooks/usePathname";
 import { buildHref, getPathname, navigate } from "../router";
+import { parseContact } from "../utils/parseContact";
+import { parsePriceAmount } from "../utils/parsePrice";
 
 const LISTING_PATH_PATTERN = /^\/listing\/(\d+)$/;
+const SORT_OPTIONS: SortOption[] = ["newest", "price-asc", "price-desc"];
+const DEFAULT_SORT: SortOption = "newest";
 
 function getActiveListingNumber(pathname: string) {
   const match = pathname.match(LISTING_PATH_PATTERN);
@@ -21,11 +26,16 @@ function getActiveListingNumber(pathname: string) {
 
 function getFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search);
+  const sortParam = params.get("sort");
 
   return {
     search: params.get("q") ?? "",
     city: params.get("city") ?? "",
     category: params.get("category") ?? "",
+    seller: params.get("seller") ?? "",
+    sortBy: SORT_OPTIONS.includes(sortParam as SortOption)
+      ? (sortParam as SortOption)
+      : DEFAULT_SORT,
   };
 }
 
@@ -49,6 +59,8 @@ function HomePage() {
   const [search, setSearch] = useState(() => getFiltersFromUrl().search);
   const [city, setCity] = useState(() => getFiltersFromUrl().city);
   const [category, setCategory] = useState(() => getFiltersFromUrl().category);
+  const [seller, setSeller] = useState(() => getFiltersFromUrl().seller);
+  const [sortBy, setSortBy] = useState(() => getFiltersFromUrl().sortBy);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const pathname = usePathname();
@@ -63,12 +75,14 @@ function HomePage() {
     if (search) params.set("q", search);
     if (city) params.set("city", city);
     if (category) params.set("category", category);
+    if (seller) params.set("seller", seller);
+    if (sortBy !== DEFAULT_SORT) params.set("sort", sortBy);
 
     const queryString = params.toString();
     const url = buildHref("/") + (queryString ? `?${queryString}` : "");
 
     window.history.replaceState({}, "", url);
-  }, [search, city, category, pathname]);
+  }, [search, city, category, seller, sortBy, pathname]);
 
   useEffect(() => {
     function handlePopState() {
@@ -80,6 +94,8 @@ function HomePage() {
       setSearch(filters.search);
       setCity(filters.city);
       setCategory(filters.category);
+      setSeller(filters.seller);
+      setSortBy(filters.sortBy);
     }
 
     window.addEventListener("popstate", handlePopState);
@@ -140,11 +156,40 @@ function HomePage() {
       const matchesCity = !city || listing.city === city;
       const matchesCategory = !category || listing.category === category;
 
-      return matchesSearch && matchesCity && matchesCategory;
-    });
-  }, [parsedListings, search, city, category]);
+      const matchesSeller =
+        !seller ||
+        (listing.contact &&
+          parseContact(listing.contact).telegramUsername.toLowerCase() ===
+            seller.toLowerCase());
 
-  const activeFilterCount = [search, city, category].filter(Boolean).length;
+      return matchesSearch && matchesCity && matchesCategory && matchesSeller;
+    });
+  }, [parsedListings, search, city, category, seller]);
+
+  const sortedListings = useMemo(() => {
+    if (sortBy === "newest") {
+      return [...filteredListings].sort(
+        (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
+      );
+    }
+
+    const direction = sortBy === "price-asc" ? 1 : -1;
+
+    return [...filteredListings].sort((a, b) => {
+      const priceA = parsePriceAmount(a.price);
+      const priceB = parsePriceAmount(b.price);
+
+      if (priceA === null && priceB === null) return 0;
+      if (priceA === null) return 1;
+      if (priceB === null) return -1;
+
+      return (priceA - priceB) * direction;
+    });
+  }, [filteredListings, sortBy]);
+
+  const activeFilterCount = [search, city, category, seller].filter(
+    Boolean
+  ).length;
   const hasActiveFilters = activeFilterCount > 0;
 
   const activeListing = useMemo(() => {
@@ -177,6 +222,11 @@ function HomePage() {
     setSearch("");
     setCity("");
     setCategory("");
+    setSeller("");
+  }
+
+  function clearSellerFilter() {
+    setSeller("");
   }
 
   function closeActiveListing() {
@@ -184,6 +234,8 @@ function HomePage() {
     if (search) params.set("q", search);
     if (city) params.set("city", city);
     if (category) params.set("category", category);
+    if (seller) params.set("seller", seller);
+    if (sortBy !== DEFAULT_SORT) params.set("sort", sortBy);
 
     const queryString = params.toString();
     navigate("/" + (queryString ? `?${queryString}` : ""));
@@ -205,6 +257,22 @@ function HomePage() {
           </div>
         </header>
 
+        {seller && (
+          <div style={styles.sellerBanner}>
+            <span>
+              Объявления продавца <strong>@{seller}</strong>
+            </span>
+
+            <button
+              type="button"
+              style={styles.sellerBannerButton}
+              onClick={clearSellerFilter}
+            >
+              Сбросить
+            </button>
+          </div>
+        )}
+
         <NoticePanel />
 
         <DonatePanel />
@@ -222,12 +290,14 @@ function HomePage() {
                 search={search}
                 city={city}
                 category={category}
+                sortBy={sortBy}
                 cities={cities}
                 categories={categories}
                 hasActiveFilters={hasActiveFilters}
                 onSearchChange={setSearch}
                 onCityChange={setCity}
                 onCategoryChange={setCategory}
+                onSortChange={setSortBy}
                 onResetFilters={resetFilters}
               />
             </aside>
@@ -236,7 +306,7 @@ function HomePage() {
               {filteredListings.length === 0 ? (
                 <StatusMessage>По фильтрам ничего не найдено.</StatusMessage>
               ) : (
-                <ListingsGrid listings={filteredListings} />
+                <ListingsGrid listings={sortedListings} />
               )}
             </section>
           </div>
@@ -278,12 +348,14 @@ function HomePage() {
             search={search}
             city={city}
             category={category}
+            sortBy={sortBy}
             cities={cities}
             categories={categories}
             hasActiveFilters={hasActiveFilters}
             onSearchChange={setSearch}
             onCityChange={setCity}
             onCategoryChange={setCategory}
+            onSortChange={setSortBy}
             onResetFilters={resetFilters}
           />
 
@@ -353,6 +425,35 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: 700,
     whiteSpace: "nowrap",
     fontVariantNumeric: "tabular-nums",
+  },
+
+  sellerBanner: {
+    width: "100%",
+    minHeight: "33px",
+    marginBottom: "10px",
+    padding: "7px 9px 7px 11px",
+    borderRadius: "12px",
+    background: "color-mix(in srgb, var(--accent) 10%, var(--card))",
+    border: "1px solid color-mix(in srgb, var(--accent) 30%, var(--line))",
+    color: "var(--ink)",
+    fontSize: "13px",
+    fontWeight: 700,
+    lineHeight: 1.25,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "8px",
+  },
+
+  sellerBannerButton: {
+    flexShrink: 0,
+    border: "none",
+    background: "transparent",
+    color: "var(--accent)",
+    fontSize: "12px",
+    fontWeight: 800,
+    cursor: "pointer",
+    padding: 0,
   },
 
   sheetOverlay: {

@@ -1,4 +1,5 @@
 import { Octokit } from '@octokit/rest'
+import sharp from 'sharp'
 import fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
@@ -6,6 +7,36 @@ import type { Listing } from '../src/models/listing'
 import { parseImagesSection } from '../src/services/listingsService'
 
 const IMAGES_DIR = path.join(process.cwd(), 'public', 'images')
+const MAX_IMAGE_WIDTH = 1600
+
+async function optimizeImage(buffer: Buffer, extension: string): Promise<Buffer> {
+  if (extension === '.gif') {
+    return buffer
+  }
+
+  try {
+    const image = sharp(buffer)
+      .rotate()
+      .resize({ width: MAX_IMAGE_WIDTH, withoutEnlargement: true })
+
+    if (extension === '.png') {
+      return await image.png({ compressionLevel: 9 }).toBuffer()
+    }
+
+    if (extension === '.webp') {
+      return await image.webp({ quality: 82 }).toBuffer()
+    }
+
+    if (extension === '.avif') {
+      return await image.avif({ quality: 60 }).toBuffer()
+    }
+
+    return await image.jpeg({ quality: 82, mozjpeg: true }).toBuffer()
+  } catch (error) {
+    console.warn(`Failed to optimize image, keeping original: ${error}`)
+    return buffer
+  }
+}
 
 const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
   'image/jpeg': '.jpg',
@@ -62,10 +93,13 @@ async function localizeIssueImages(issueNumber: number, body: string) {
     const fileName = `${baseName}${extension}`
     const filePath = path.join(IMAGES_DIR, fileName)
 
-    const buffer = Buffer.from(await response.arrayBuffer())
+    const rawBuffer = Buffer.from(await response.arrayBuffer())
+    const buffer = await optimizeImage(rawBuffer, extension)
     await fs.writeFile(filePath, buffer)
 
-    console.log(`Saved image: ${fileName}`)
+    console.log(
+      `Saved image: ${fileName} (${rawBuffer.length} -> ${buffer.length} bytes)`,
+    )
 
     updatedBody = updatedBody.split(url).join(fileName)
   }

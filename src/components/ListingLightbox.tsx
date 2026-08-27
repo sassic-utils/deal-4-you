@@ -3,6 +3,8 @@ import type { CSSProperties, TouchEvent } from "react";
 import type { ParsedListing } from "../models/listing";
 import ContactLinks from "./ContactLinks";
 import Modal from "./Modal";
+import Link from "./Link";
+import { parseContact } from "../utils/parseContact";
 
 type ListingLightboxProps = {
   listing: ParsedListing;
@@ -22,6 +24,10 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
       document.title = previousTitle;
     };
   }, [listing.title]);
+
+  const sellerTelegram = listing.contact
+    ? parseContact(listing.contact).telegramUsername
+    : "";
 
   const hasImages = imageUrls.length > 0;
   const hasMultipleImages = imageUrls.length > 1;
@@ -224,6 +230,15 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
           <section style={styles.modalSection}>
             <h3 style={styles.sectionTitle}>Контакт</h3>
             <ContactLinks contact={listing.contact} />
+
+            {sellerTelegram && (
+              <Link
+                to={`/?seller=${encodeURIComponent(sellerTelegram)}`}
+                style={styles.sellerLink}
+              >
+                Все объявления продавца @{sellerTelegram}
+              </Link>
+            )}
           </section>
         )}
 
@@ -435,6 +450,15 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.45,
     fontSize: "15px",
     whiteSpace: "pre-wrap",
+  },
+
+  sellerLink: {
+    display: "inline-flex",
+    marginTop: "10px",
+    color: "var(--accent)",
+    fontSize: "13px",
+    fontWeight: 800,
+    textDecoration: "none",
   },
 
   modalFooter: {

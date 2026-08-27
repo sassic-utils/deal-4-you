@@ -1,5 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { CSSProperties, ReactNode } from "react";
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 type ModalProps = {
   onClose: () => void;
@@ -20,10 +23,43 @@ function Modal({
   closeButtonStyle,
   closeLabel = "Закрыть",
 }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+      FOCUSABLE_SELECTOR
+    );
+    focusable?.[0]?.focus();
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !modalRef.current) {
+        return;
+      }
+
+      const focusableElements = Array.from(
+        modalRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      );
+
+      if (focusableElements.length === 0) {
+        return;
+      }
+
+      const first = focusableElements[0];
+      const last = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
@@ -33,6 +69,7 @@ function Modal({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      previouslyFocused?.focus();
     };
   }, [onClose]);
 
@@ -43,6 +80,7 @@ function Modal({
       onClick={onClose}
     >
       <div
+        ref={modalRef}
         style={{ ...styles.modal, ...modalStyle }}
         role="dialog"
         aria-modal="true"

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parseListings } from '../src/services/listingsService'
+import { parsePriceAmount } from '../src/utils/parsePrice'
 import type { Listing, ParsedListing } from '../src/models/listing'
 
 const repository = process.env.GITHUB_REPOSITORY ?? 'sassic-utils/deal-4-you'
@@ -36,13 +37,11 @@ function getImageUrl(image: string) {
 }
 
 function parsePriceValue(priceText: string) {
-  const amountMatch = priceText.match(/\d+(?:[.,]\d+)?/)
+  const amount = parsePriceAmount(priceText)
 
-  if (!amountMatch) {
+  if (amount === null) {
     return null
   }
-
-  const amount = amountMatch[0].replace(',', '.')
 
   const currencySymbols: Record<string, string> = {
     '€': 'EUR',

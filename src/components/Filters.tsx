@@ -1,15 +1,19 @@
 import type { CSSProperties } from "react";
 
+export type SortOption = "newest" | "price-asc" | "price-desc";
+
 type FiltersProps = {
   search: string;
   city: string;
   category: string;
+  sortBy: SortOption;
   cities: string[];
   categories: string[];
   hasActiveFilters: boolean;
   onSearchChange: (value: string) => void;
   onCityChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
+  onSortChange: (value: SortOption) => void;
   onResetFilters: () => void;
 };
 
@@ -17,12 +21,14 @@ function Filters({
                    search,
                    city,
                    category,
+                   sortBy,
                    cities,
                    categories,
                    hasActiveFilters,
                    onSearchChange,
                    onCityChange,
                    onCategoryChange,
+                   onSortChange,
                    onResetFilters,
                  }: FiltersProps) {
   return (
@@ -85,6 +91,19 @@ function Filters({
           </select>
         </label>
       </div>
+
+      <label className="filter-field" style={styles.field}>
+        <span style={styles.label}>Сортировка</span>
+        <select
+          value={sortBy}
+          onChange={(event) => onSortChange(event.target.value as SortOption)}
+          style={styles.input}
+        >
+          <option value="newest">Сначала новые</option>
+          <option value="price-asc">Сначала дешевле</option>
+          <option value="price-desc">Сначала дороже</option>
+        </select>
+      </label>
     </div>
   );
 }
