@@ -13,6 +13,14 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: image
+    attributes:
+      label: Image
+      description: Paste/drag photos here (one per line).
+    validations:
+      required: true
+
   - type: input
     id: price
     attributes:
