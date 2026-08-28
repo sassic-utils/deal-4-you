@@ -22,9 +22,12 @@ public/data/listings.json   ← коммитится в репозиторий A
 React SPA (Vite) читает listings.json и парсит поля на клиенте
 ```
 
-- `scripts/generate-listings.ts` — выгружает все **открытые** issues репозитория и
-  пишет их «как есть» (id, number, title, body, state, labels, url, createdAt, updatedAt)
-  в `public/data/listings.json`. Никакого парсинга цены/города/категории на этом шаге нет.
+- `scripts/generate-listings.ts` — выгружает все **открытые** issues репозитория,
+  скачивает вложенные фото (markdown `![alt](url)` и HTML `<img src="...">` — GitHub вставляет
+  то или другое в зависимости от способа загрузки), ресайзит/сжимает через `sharp` (до 1600px,
+  JPEG q82/mozjpeg, авто-поворот по EXIF) и кладёт в `public/images/<номер issue>-image-NN.<ext>`,
+  переписывая ссылки в `body` на локальные имена файлов (идемпотентно — уже скачанные не трогает).
+  Пишет результат в `public/data/listings.json`.
 - `src/services/listingsService.ts` — на клиенте разбирает `body` по секциям
   `## Description`, `## Price`, `## Contact`, `## Images`/`Photos`/`Фото`, и достаёт
   город/категорию/статус из labels вида `city:berlin`, `category:electronics`, `status:active`.
@@ -42,6 +45,10 @@ React SPA (Vite) читает listings.json и парсит поля на кли
   большинство AI-ботов) — им иначе достаётся пустой `<div id="root"></div>`. При гидратации
   React (`src/main.tsx`) удаляет `#prerendered` и рендерит обычный интерактивный UI поверх.
   Главная страница (список объявлений) прероста не имеет — это следующий шаг, если понадобится.
+- `public/llms.txt` / `public/llms-full.txt` (генерируются в `generate-listings.ts`, конвенция
+  [llmstxt.org](https://llmstxt.org)) — краткий индекс со ссылками и полный текстовый дамп всех
+  активных объявлений соответственно, для AI-агентов, которым проще прочитать один текстовый
+  файл, чем ходить по HTML-страницам.
 
 ## Формат объявления (GitHub Issue)
 

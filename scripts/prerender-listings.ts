@@ -62,16 +62,36 @@ function parsePriceValue(priceText: string) {
 function buildDescription(listing: ParsedListing) {
   const source = listing.description || listing.title
   const singleLine = source.replace(/\s+/g, ' ').trim()
+  const prefix = listing.state === 'open' ? '' : 'Продано. '
 
-  return singleLine.length > 160
-    ? `${singleLine.slice(0, 157)}...`
-    : singleLine
+  const truncated =
+    singleLine.length > 160 ? `${singleLine.slice(0, 157)}...` : singleLine
+
+  return `${prefix}${truncated}`
+}
+
+function categoryLink(listing: ParsedListing) {
+  return listing.category
+    ? `${basePath}?category=${encodeURIComponent(listing.category)}`
+    : basePath
 }
 
 function buildStaticContent(listing: ParsedListing) {
   const parts: string[] = []
+  const isSold = listing.state !== 'open'
 
   parts.push(`<h1>${escapeHtml(listing.title)}</h1>`)
+
+  if (isSold) {
+    const linkText = listing.category
+      ? `Похожие предложения в категории «${listing.category}»`
+      : 'Все объявления'
+
+    parts.push(
+      `<p><strong>Товар продан.</strong> ` +
+        `<a href="${categoryLink(listing)}">${escapeHtml(linkText)}</a></p>`,
+    )
+  }
 
   const meta: string[] = []
   if (listing.city) meta.push(escapeHtml(listing.city))
@@ -126,7 +146,10 @@ function buildJsonLd(listing: ParsedListing) {
       '@type': 'Offer',
       price: price.amount,
       priceCurrency: price.currency ?? 'BYN',
-      availability: 'https://schema.org/InStock',
+      availability:
+        listing.state === 'open'
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
       url: `${siteUrl}listing/${listing.number}`,
     }
   }
@@ -148,7 +171,10 @@ async function main() {
 
   await Promise.all(
     parsedListings.map(async (listing) => {
-      const pageTitle = `${listing.title} — Free Board`
+      const pageTitle =
+        listing.state === 'open'
+          ? `${listing.title} — Free Board`
+          : `${listing.title} (продано) — Free Board`
       const description = buildDescription(listing)
       const canonicalUrl = `${siteUrl}listing/${listing.number}`
       const image = listing.image ? getImageUrl(listing.image) : ''

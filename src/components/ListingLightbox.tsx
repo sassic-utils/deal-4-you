@@ -16,18 +16,26 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
+  const isSold = listing.state !== "open";
+
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = `${listing.title} — Free Board`;
+    document.title = isSold
+      ? `${listing.title} (продано) — Free Board`
+      : `${listing.title} — Free Board`;
 
     return () => {
       document.title = previousTitle;
     };
-  }, [listing.title]);
+  }, [listing.title, isSold]);
 
   const sellerTelegram = listing.contact
     ? parseContact(listing.contact).telegramUsername
     : "";
+
+  const similarListingsLink = listing.category
+    ? `/?category=${encodeURIComponent(listing.category)}`
+    : "/";
 
   const hasImages = imageUrls.length > 0;
   const hasMultipleImages = imageUrls.length > 1;
@@ -93,6 +101,10 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
     }
   }
 
+  function handleTouchCancel() {
+    touchStartX.current = null;
+  }
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "ArrowLeft") {
@@ -122,12 +134,13 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
         style={styles.modalImageBox}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchCancel}
       >
         {shouldShowCurrentImage ? (
           <img
             src={currentImageSrc}
             alt={`${listing.title}, фото ${currentImageIndex + 1}`}
-            style={styles.image}
+            style={isSold ? { ...styles.image, ...styles.imageSold } : styles.image}
             onError={() => markImageFailed(currentImageSrc)}
           />
         ) : (
@@ -136,6 +149,8 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
             <span style={styles.imageText}>Фото</span>
           </div>
         )}
+
+        {isSold && <div style={styles.soldStamp}>ПРОДАНО</div>}
 
         {hasMultipleImages && (
           <>
@@ -212,6 +227,17 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
           )}
         </div>
 
+        {isSold && (
+          <div style={styles.soldNotice}>
+            <p style={styles.soldNoticeText}>Товар продан.</p>
+            <Link to={similarListingsLink} style={styles.soldNoticeLink}>
+              {listing.category
+                ? `Посмотреть похожие в категории «${listing.category}»`
+                : "Посмотреть все объявления"}
+            </Link>
+          </div>
+        )}
+
         {listing.price && (
           <section style={styles.modalSection}>
             <h3 style={styles.sectionTitle}>Цена</h3>
@@ -284,6 +310,29 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "6px",
   },
 
+  imageSold: {
+    filter: "grayscale(0.6)",
+    opacity: 0.75,
+  },
+
+  soldStamp: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%) rotate(-8deg)",
+    zIndex: 2,
+    padding: "8px 18px",
+    border: "3px solid var(--ink-faint)",
+    borderRadius: "8px",
+    color: "var(--ink-faint)",
+    background: "color-mix(in srgb, var(--card) 70%, transparent)",
+    fontSize: "22px",
+    fontWeight: 900,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    pointerEvents: "none",
+  },
+
   imageIcon: {
     fontSize: "28px",
     lineHeight: 1,
@@ -335,6 +384,7 @@ const styles: Record<string, CSSProperties> = {
     borderBottom: "1px solid var(--line)",
     overflow: "hidden",
     padding: "10px",
+    touchAction: "pan-y",
   },
 
   galleryButton: {
@@ -450,6 +500,29 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.45,
     fontSize: "15px",
     whiteSpace: "pre-wrap",
+  },
+
+  soldNotice: {
+    marginTop: "10px",
+    padding: "10px 12px",
+    borderRadius: "10px",
+    background: "color-mix(in srgb, var(--ink) 6%, var(--paper))",
+    border: "1px solid var(--line)",
+  },
+
+  soldNoticeText: {
+    margin: "0 0 4px",
+    color: "var(--ink)",
+    fontSize: "14px",
+    fontWeight: 800,
+  },
+
+  soldNoticeLink: {
+    display: "inline-flex",
+    color: "var(--accent)",
+    fontSize: "13px",
+    fontWeight: 800,
+    textDecoration: "none",
   },
 
   sellerLink: {

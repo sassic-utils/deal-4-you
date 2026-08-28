@@ -4,7 +4,7 @@ import fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { Listing } from '../src/models/listing'
-import { parseImagesSection } from '../src/services/listingsService'
+import { parseImagesSection, parseListings } from '../src/services/listingsService'
 
 const IMAGES_DIR = path.join(process.cwd(), 'public', 'images')
 const MAX_IMAGE_WIDTH = 1600
@@ -129,17 +129,19 @@ const octokit = new Octokit({
 })
 
 async function main() {
+  // Fetch closed issues too: a closed (sold) listing keeps its page alive
+  // instead of 404ing, so it needs to stay in listings.json.
   const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
     owner,
     repo,
-    state: 'open',
+    state: 'all',
     per_page: 100,
   })
 
-  const openIssues = issues.filter((issue) => !issue.pull_request)
+  const allIssues = issues.filter((issue) => !issue.pull_request)
   const listings: Listing[] = []
 
-  for (const issue of openIssues) {
+  for (const issue of allIssues) {
     const body = await localizeIssueImages(issue.number, issue.body ?? '')
 
     listings.push({
@@ -188,8 +190,8 @@ async function main() {
     { loc: `${siteUrl}donate`, changefreq: 'monthly', priority: '0.3' },
     ...listings.map((listing) => ({
       loc: `${siteUrl}listing/${listing.number}`,
-      changefreq: 'weekly',
-      priority: '0.6',
+      changefreq: listing.state === 'open' ? 'weekly' : 'monthly',
+      priority: listing.state === 'open' ? '0.6' : '0.3',
     })),
   ]
 
@@ -208,6 +210,65 @@ async function main() {
 
   console.log(`Generated sitemap with ${sitemapEntries.length} URLs`)
   console.log(`Output: ${sitemapPath}`)
+
+  const parsedListings = parseListings(listings)
+  const activeListings = parsedListings.filter((listing) => listing.state === 'open')
+
+  const llmsTxtPath = path.join(process.cwd(), 'public', 'llms.txt')
+  const llmsTxt = [
+    '# Free Board',
+    '',
+    '> Бесплатная доска объявлений с ручной модерацией. Объявления публикует ' +
+      'владелец сайта после проверки присланных заявок; аккаунтов и регистрации нет.',
+    '',
+    '## Объявления',
+    '',
+    ...activeListings.map((listing) => {
+      const meta = [listing.city, listing.category].filter(Boolean).join(', ')
+      const price = listing.price ? ` — ${listing.price}` : ''
+      const suffix = meta ? `: ${meta}` : ''
+
+      return `- [${listing.title}${price}](${siteUrl}listing/${listing.number})${suffix}`
+    }),
+    '',
+    '## Страницы',
+    '',
+    `- [Поддержать проект](${siteUrl}donate)`,
+    `- [Полный текст всех объявлений](${siteUrl}llms-full.txt)`,
+    '',
+  ].join('\n')
+
+  await fs.writeFile(llmsTxtPath, llmsTxt, 'utf8')
+  console.log(`Output: ${llmsTxtPath}`)
+
+  const llmsFullTxtPath = path.join(process.cwd(), 'public', 'llms-full.txt')
+  const llmsFullTxt = [
+    '# Free Board',
+    '',
+    '> Бесплатная доска объявлений с ручной модерацией. Ниже — полный текст ' +
+      'всех активных объявлений.',
+    '',
+    ...activeListings.flatMap((listing) => {
+      const meta = [listing.city, listing.category].filter(Boolean).join(' · ')
+
+      const lines = [`## ${listing.title}`, '', `URL: ${siteUrl}listing/${listing.number}`]
+
+      if (meta) lines.push(meta)
+      if (listing.price) lines.push(`Цена: ${listing.price}`)
+
+      lines.push('')
+
+      if (listing.description) lines.push(listing.description, '')
+      if (listing.contact) lines.push('Контакт:', listing.contact, '')
+
+      lines.push('---', '')
+
+      return lines
+    }),
+  ].join('\n')
+
+  await fs.writeFile(llmsFullTxtPath, llmsFullTxt, 'utf8')
+  console.log(`Output: ${llmsFullTxtPath}`)
 }
 
 main().catch((error) => {

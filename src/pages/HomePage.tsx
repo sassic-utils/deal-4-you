@@ -122,22 +122,27 @@ function HomePage() {
 
   const parsedListings = useMemo(() => parseListings(listings), [listings]);
 
+  const activeListings = useMemo(
+    () => parsedListings.filter((listing) => listing.state === "open"),
+    [parsedListings]
+  );
+
   const cities = useMemo(() => {
     return Array.from(
-      new Set(parsedListings.map((listing) => listing.city).filter(Boolean))
+      new Set(activeListings.map((listing) => listing.city).filter(Boolean))
     ).sort();
-  }, [parsedListings]);
+  }, [activeListings]);
 
   const categories = useMemo(() => {
     return Array.from(
-      new Set(parsedListings.map((listing) => listing.category).filter(Boolean))
+      new Set(activeListings.map((listing) => listing.category).filter(Boolean))
     ).sort();
-  }, [parsedListings]);
+  }, [activeListings]);
 
   const filteredListings = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
-    return parsedListings.filter((listing) => {
+    return activeListings.filter((listing) => {
       const matchesSearch =
         !normalizedSearch ||
         [
@@ -164,7 +169,7 @@ function HomePage() {
 
       return matchesSearch && matchesCity && matchesCategory && matchesSeller;
     });
-  }, [parsedListings, search, city, category, seller]);
+  }, [activeListings, search, city, category, seller]);
 
   const sortedListings = useMemo(() => {
     if (sortBy === "newest") {
@@ -253,7 +258,7 @@ function HomePage() {
           </div>
 
           <div style={styles.counter}>
-            {filteredListings.length} из {parsedListings.length} объявл.
+            {filteredListings.length} из {activeListings.length} объявл.
           </div>
         </header>
 
