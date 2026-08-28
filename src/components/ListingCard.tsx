@@ -78,15 +78,16 @@ function ListingCard({ listing }: ListingCardProps) {
             ))}
           </div>
 
+        </div>
+
+        <div style={styles.bottom}>
           {listing.price && (
             <section style={styles.section}>
               <h3 style={styles.sectionTitle}>Цена</h3>
               <p style={styles.price}>{listing.price}</p>
             </section>
           )}
-        </div>
 
-        <div style={styles.bottom}>
           {hasDetails && (
             <Link to={`/listing/${listing.number}`} style={styles.moreButton}>
               Подробнее
@@ -216,7 +217,8 @@ const styles: Record<string, CSSProperties> = {
   },
 
   section: {
-    marginTop: "8px",
+    marginTop: 0,
+    marginBottom: "8px",
   },
 
   sectionTitle: {
