@@ -38,6 +38,14 @@ function parseImagesText(imagesSection: string) {
         return markdownImageMatch[1].trim();
       }
 
+      // HTML image: <img ... src="image.jpg" ... /> (GitHub inserts this
+      // for pasted/dragged screenshots with explicit width/height).
+      const htmlImageMatch = line.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i);
+
+      if (htmlImageMatch?.[1]) {
+        return htmlImageMatch[1].trim();
+      }
+
       return line;
     })
     .filter(Boolean);
