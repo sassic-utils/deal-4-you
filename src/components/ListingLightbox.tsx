@@ -33,8 +33,9 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
     ? parseContact(listing.contact).telegramUsername
     : "";
 
-  const similarListingsLink = listing.category
-    ? `/?category=${encodeURIComponent(listing.category)}`
+  const primaryCategory = listing.categories[0] ?? "";
+  const similarListingsLink = primaryCategory
+    ? `/?category=${encodeURIComponent(primaryCategory)}`
     : "/";
 
   const hasImages = imageUrls.length > 0;
@@ -222,17 +223,19 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
         <div style={styles.meta}>
           {listing.city && <span style={styles.label}>📍 {listing.city}</span>}
 
-          {listing.category && (
-            <span style={styles.label}>🏷️ {listing.category}</span>
-          )}
+          {listing.categories.map((category) => (
+            <span key={category} style={styles.label}>
+              🏷️ {category}
+            </span>
+          ))}
         </div>
 
         {isSold && (
           <div style={styles.soldNotice}>
             <p style={styles.soldNoticeText}>Товар продан.</p>
             <Link to={similarListingsLink} style={styles.soldNoticeLink}>
-              {listing.category
-                ? `Посмотреть похожие в категории «${listing.category}»`
+              {primaryCategory
+                ? `Посмотреть похожие в категории «${primaryCategory}»`
                 : "Посмотреть все объявления"}
             </Link>
           </div>

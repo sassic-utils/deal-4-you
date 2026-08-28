@@ -135,7 +135,7 @@ function HomePage() {
 
   const categories = useMemo(() => {
     return Array.from(
-      new Set(activeListings.map((listing) => listing.category).filter(Boolean))
+      new Set(activeListings.flatMap((listing) => listing.categories))
     ).sort();
   }, [activeListings]);
 
@@ -149,7 +149,7 @@ function HomePage() {
           listing.title,
           listing.description,
           listing.city,
-          listing.category,
+          ...listing.categories,
           listing.price,
           listing.contact,
         ]
@@ -159,7 +159,7 @@ function HomePage() {
           .includes(normalizedSearch);
 
       const matchesCity = !city || listing.city === city;
-      const matchesCategory = !category || listing.category === category;
+      const matchesCategory = !category || listing.categories.includes(category);
 
       const matchesSeller =
         !seller ||

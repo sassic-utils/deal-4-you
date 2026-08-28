@@ -71,20 +71,23 @@ function buildDescription(listing: ParsedListing) {
 }
 
 function categoryLink(listing: ParsedListing) {
-  return listing.category
-    ? `${basePath}?category=${encodeURIComponent(listing.category)}`
+  const primaryCategory = listing.categories[0]
+
+  return primaryCategory
+    ? `${basePath}?category=${encodeURIComponent(primaryCategory)}`
     : basePath
 }
 
 function buildStaticContent(listing: ParsedListing) {
   const parts: string[] = []
   const isSold = listing.state !== 'open'
+  const primaryCategory = listing.categories[0]
 
   parts.push(`<h1>${escapeHtml(listing.title)}</h1>`)
 
   if (isSold) {
-    const linkText = listing.category
-      ? `Похожие предложения в категории «${listing.category}»`
+    const linkText = primaryCategory
+      ? `Похожие предложения в категории «${primaryCategory}»`
       : 'Все объявления'
 
     parts.push(
@@ -95,7 +98,7 @@ function buildStaticContent(listing: ParsedListing) {
 
   const meta: string[] = []
   if (listing.city) meta.push(escapeHtml(listing.city))
-  if (listing.category) meta.push(escapeHtml(listing.category))
+  if (listing.categories.length > 0) meta.push(escapeHtml(listing.categories.join(', ')))
   if (meta.length > 0) {
     parts.push(`<p>${meta.join(' · ')}</p>`)
   }

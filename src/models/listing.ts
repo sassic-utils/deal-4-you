@@ -18,6 +18,6 @@ export type ParsedListing = Listing & {
   images: string[];
   imageCount: number;
   city: string;
-  category: string;
+  categories: string[];
   status: string;
 };

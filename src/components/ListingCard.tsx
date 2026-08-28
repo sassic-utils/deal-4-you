@@ -71,9 +71,11 @@ function ListingCard({ listing }: ListingCardProps) {
               <span style={styles.label}>📍 {listing.city}</span>
             )}
 
-            {listing.category && (
-              <span style={styles.label}>🏷️ {listing.category}</span>
-            )}
+            {listing.categories.map((category) => (
+              <span key={category} style={styles.label}>
+                🏷️ {category}
+              </span>
+            ))}
           </div>
 
           {listing.price && (

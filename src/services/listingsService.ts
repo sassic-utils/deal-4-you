@@ -1,17 +1,16 @@
 import type { Listing, ParsedListing } from "../models/listing";
 
-function getLabelValue(labels: string[], prefix: string) {
+function getLabelValues(labels: string[], prefix: string) {
   const normalizedPrefix = `${prefix.toLowerCase()}:`;
 
-  const found = labels.find((label) =>
-    label.toLowerCase().startsWith(normalizedPrefix)
-  );
+  return labels
+    .filter((label) => label.toLowerCase().startsWith(normalizedPrefix))
+    .map((label) => label.slice(label.indexOf(":") + 1).trim())
+    .filter(Boolean);
+}
 
-  if (!found) {
-    return "";
-  }
-
-  return found.slice(found.indexOf(":") + 1).trim();
+function getLabelValue(labels: string[], prefix: string) {
+  return getLabelValues(labels, prefix)[0] ?? "";
 }
 
 function getSection(body: string, sectionName: string) {
@@ -88,7 +87,7 @@ export function parseListing(listing: Listing): ParsedListing {
     images,
     imageCount: images.length,
     city: getLabelValue(listing.labels, "city"),
-    category: getLabelValue(listing.labels, "category"),
+    categories: getLabelValues(listing.labels, "category"),
     status: getLabelValue(listing.labels, "status"),
   };
 }
