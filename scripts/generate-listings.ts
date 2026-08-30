@@ -183,7 +183,7 @@ async function main() {
   console.log(`Generated ${listings.length} listings`)
   console.log(`Output: ${outputPath}`)
 
-  const siteUrl = `https://${owner}.github.io/${repo}/`
+  const siteUrl = 'https://deal4u.by/'
   const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml')
   const sitemapEntries = [
     { loc: siteUrl, changefreq: 'daily', priority: '1.0' },
