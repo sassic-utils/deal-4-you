@@ -142,6 +142,8 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
             src={currentImageSrc}
             alt={`${listing.title}, фото ${currentImageIndex + 1}`}
             style={isSold ? { ...styles.image, ...styles.imageSold } : styles.image}
+            width={800}
+            height={600}
             onError={() => markImageFailed(currentImageSrc)}
           />
         ) : (
