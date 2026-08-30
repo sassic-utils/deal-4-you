@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import type { ParsedListing } from "../models/listing";
 import Link from "./Link";
@@ -280,4 +280,4 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
-export default ListingCard;
+export default memo(ListingCard);
