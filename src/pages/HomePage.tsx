@@ -57,6 +57,7 @@ function HomePage() {
   const [error, setError] = useState("");
 
   const [search, setSearch] = useState(() => getFiltersFromUrl().search);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [city, setCity] = useState(() => getFiltersFromUrl().city);
   const [category, setCategory] = useState(() => getFiltersFromUrl().category);
   const [seller, setSeller] = useState(() => getFiltersFromUrl().seller);
@@ -106,6 +107,14 @@ function HomePage() {
   }, []);
 
   useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 250);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
+
+  useEffect(() => {
     async function loadListings() {
       try {
         const data = await fetchListings();
@@ -140,7 +149,7 @@ function HomePage() {
   }, [activeListings]);
 
   const filteredListings = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
+    const normalizedSearch = debouncedSearch.trim().toLowerCase();
 
     return activeListings.filter((listing) => {
       const matchesSearch =
@@ -169,7 +178,7 @@ function HomePage() {
 
       return matchesSearch && matchesCity && matchesCategory && matchesSeller;
     });
-  }, [activeListings, search, city, category, seller]);
+  }, [activeListings, debouncedSearch, city, category, seller]);
 
   const sortedListings = useMemo(() => {
     if (sortBy === "newest") {
