@@ -4,10 +4,8 @@ import { parseListings } from '../src/services/listingsService'
 import { parsePriceAmount } from '../src/utils/parsePrice'
 import type { Listing, ParsedListing } from '../src/models/listing'
 
-const repository = process.env.GITHUB_REPOSITORY ?? 'sassic-utils/deal-4-you'
-const [owner, repo] = repository.split('/')
-const basePath = `/${repo}/`
-const siteUrl = `https://${owner}.github.io${basePath}`
+const basePath = '/'
+const siteUrl = 'https://www.deal4u.by/'
 
 const distDir = path.join(process.cwd(), 'dist')
 
