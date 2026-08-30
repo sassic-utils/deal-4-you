@@ -212,10 +212,31 @@ async function main() {
         `<meta property="og:url" content="${canonicalUrl}" />`,
       )
 
+      if (image) {
+        html = html.replace(
+          /<meta property="og:image"[^>]*\/>/,
+          `<meta property="og:image" content="${escapeHtml(image)}" />`,
+        )
+      }
+
+      html = html.replace(
+        /<meta\s+name="twitter:title"[^>]*\/>/,
+        `<meta name="twitter:title" content="${escapeHtml(pageTitle)}" />`,
+      )
+
+      html = html.replace(
+        /<meta\s+name="twitter:description"[^>]*\/>/,
+        `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
+      )
+
+      if (image) {
+        html = html.replace(
+          /<meta name="twitter:image"[^>]*\/>/,
+          `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
+        )
+      }
+
       const extraHead = [
-        image
-          ? `<meta property="og:image" content="${escapeHtml(image)}" />`
-          : '',
         `<script type="application/ld+json">${escapeJsonLd(buildJsonLd(listing))}</script>`,
       ]
         .filter(Boolean)

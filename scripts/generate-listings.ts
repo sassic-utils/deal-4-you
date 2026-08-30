@@ -1,7 +1,6 @@
 import { Octokit } from '@octokit/rest'
 import sharp from 'sharp'
 import fs from 'node:fs/promises'
-import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { Listing } from '../src/models/listing'
 import { parseImagesSection, parseListings } from '../src/services/listingsService'
@@ -63,6 +62,8 @@ async function localizeIssueImages(issueNumber: number, body: string) {
 
   await fs.mkdir(IMAGES_DIR, { recursive: true })
 
+  const existingFiles = new Set(await fs.readdir(IMAGES_DIR))
+
   let updatedBody = body
 
   for (let index = 0; index < remoteImages.length; index += 1) {
@@ -71,9 +72,7 @@ async function localizeIssueImages(issueNumber: number, body: string) {
     const paddedIndex = String(index + 1).padStart(2, '0')
     const baseName = `${paddedIssue}-image-${paddedIndex}`
 
-    const existingFile = existsSync(IMAGES_DIR)
-      ? (await fs.readdir(IMAGES_DIR)).find((file) => file.startsWith(`${baseName}.`))
-      : undefined
+    const existingFile = [...existingFiles].find((file) => file.startsWith(`${baseName}.`))
 
     if (existingFile) {
       updatedBody = updatedBody.split(url).join(existingFile)
@@ -96,6 +95,7 @@ async function localizeIssueImages(issueNumber: number, body: string) {
     const rawBuffer = Buffer.from(await response.arrayBuffer())
     const buffer = await optimizeImage(rawBuffer, extension)
     await fs.writeFile(filePath, buffer)
+    existingFiles.add(fileName)
 
     console.log(
       `Saved image: ${fileName} (${rawBuffer.length} -> ${buffer.length} bytes)`,

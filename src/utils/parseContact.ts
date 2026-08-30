@@ -92,10 +92,11 @@ export function parseContact(contact: string): ParsedContact {
       return;
     }
 
-    const phoneMatch = line.match(/(\+?\d[\d\s().-]{6,})/);
+    const phoneCandidate = line.match(/\+?\d[\d\s().-]{6,}\d/)?.[0];
+    const digitCount = phoneCandidate?.replace(/\D/g, "").length ?? 0;
 
-    if (phoneMatch?.[1] && !phoneNumber) {
-      phoneNumber = normalizePhone(phoneMatch[1]);
+    if (phoneCandidate && !phoneNumber && digitCount >= 7 && digitCount <= 15) {
+      phoneNumber = normalizePhone(phoneCandidate);
       return;
     }
 
