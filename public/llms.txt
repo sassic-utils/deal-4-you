@@ -4,25 +4,25 @@
 
 ## Объявления
 
-- [Cyberpunk 2077 для PS4 — 100 BYN](https://sassic-utils.github.io/deal-4-you/listing/23): Витебск, развлечения
-- [Двухслойная палатка СССР — 100 BYN](https://sassic-utils.github.io/deal-4-you/listing/22): Витебск, спорт, туризм
-- [Настольный кронштейн для монитора ONKRON G80 — 60 BYN](https://sassic-utils.github.io/deal-4-you/listing/21): Витебск, электроника, аксессуары
-- [Спальный мешок Trek Planet Bristol Comfort — 100 BYN](https://sassic-utils.github.io/deal-4-you/listing/20): Витебск, спорт, туризм
-- [Пылесос Karcher DS 5.800 Waterfilter — 400 BYN](https://sassic-utils.github.io/deal-4-you/listing/19): Витебск, бытовая техника
-- [Механическая игровая клавиатура Redragon Kumara — 100 BYN](https://sassic-utils.github.io/deal-4-you/listing/18): Витебск, электроника, развлечения
-- [Коврик для дартса Harrows Darts Mat — 300 BYN](https://sassic-utils.github.io/deal-4-you/listing/17): Витебск, спорт
-- [Ламинатор Ibico pouchMaster 9VT — 50 BYN](https://sassic-utils.github.io/deal-4-you/listing/16): Витебск, электроника, оргтехника
-- [GameSir VX2 AimBox — 120 BYN](https://sassic-utils.github.io/deal-4-you/listing/15): Витебск, электроника, развлечения
-- [Печатная машинка Olympia в чемодане — 400 BYN](https://sassic-utils.github.io/deal-4-you/listing/14): Витебск, антиквариат
-- [Кинопроектор любительский «Русь» - СССР — 400 BYN](https://sassic-utils.github.io/deal-4-you/listing/13): Витебск, антиквариат
-- [Игра Plague Tale Requiem PS5 — 80 BYN](https://sassic-utils.github.io/deal-4-you/listing/12): Минск, развлечения
-- [Игра Plague Tale Innocence PS5 — 80 BYN](https://sassic-utils.github.io/deal-4-you/listing/11): Минск, развлечения
-- [Принтер Epson R390 (На запчасти) — 150 BYN](https://sassic-utils.github.io/deal-4-you/listing/10): Витебск, электроника
-- [Игра Ghost of Tsushima PS5 — 130 BYN](https://sassic-utils.github.io/deal-4-you/listing/9): Минск, развлечения
-- [MacBook Pro 2016 15" — 2000 BYN](https://sassic-utils.github.io/deal-4-you/listing/8): Витебск, электроника
-- [Телевизор LG55CXRLA — 3200 BYN](https://sassic-utils.github.io/deal-4-you/listing/7): Витебск, электроника
+- [Cyberpunk 2077 для PS4 — 100 BYN](https://www.deal4u.by/listing/23): Витебск, развлечения
+- [Двухслойная палатка СССР — 100 BYN](https://www.deal4u.by/listing/22): Витебск, спорт, туризм
+- [Настольный кронштейн для монитора ONKRON G80 — 60 BYN](https://www.deal4u.by/listing/21): Витебск, электроника, аксессуары
+- [Спальный мешок Trek Planet Bristol Comfort — 100 BYN](https://www.deal4u.by/listing/20): Витебск, спорт, туризм
+- [Пылесос Karcher DS 5.800 Waterfilter — 400 BYN](https://www.deal4u.by/listing/19): Витебск, бытовая техника
+- [Механическая игровая клавиатура Redragon Kumara — 100 BYN](https://www.deal4u.by/listing/18): Витебск, электроника, развлечения
+- [Коврик для дартса Harrows Darts Mat — 300 BYN](https://www.deal4u.by/listing/17): Витебск, спорт
+- [Ламинатор Ibico pouchMaster 9VT — 50 BYN](https://www.deal4u.by/listing/16): Витебск, электроника, оргтехника
+- [GameSir VX2 AimBox — 120 BYN](https://www.deal4u.by/listing/15): Витебск, электроника, развлечения
+- [Печатная машинка Olympia в чемодане — 400 BYN](https://www.deal4u.by/listing/14): Витебск, антиквариат
+- [Кинопроектор любительский «Русь» - СССР — 400 BYN](https://www.deal4u.by/listing/13): Витебск, антиквариат
+- [Игра Plague Tale Requiem PS5 — 80 BYN](https://www.deal4u.by/listing/12): Минск, развлечения
+- [Игра Plague Tale Innocence PS5 — 80 BYN](https://www.deal4u.by/listing/11): Минск, развлечения
+- [Принтер Epson R390 (На запчасти) — 150 BYN](https://www.deal4u.by/listing/10): Витебск, электроника
+- [Игра Ghost of Tsushima PS5 — 130 BYN](https://www.deal4u.by/listing/9): Минск, развлечения
+- [MacBook Pro 2016 15" — 2000 BYN](https://www.deal4u.by/listing/8): Витебск, электроника
+- [Телевизор LG55CXRLA — 3200 BYN](https://www.deal4u.by/listing/7): Витебск, электроника
 
 ## Страницы
 
-- [Поддержать проект](https://sassic-utils.github.io/deal-4-you/donate)
-- [Полный текст всех объявлений](https://sassic-utils.github.io/deal-4-you/llms-full.txt)
+- [Поддержать проект](https://www.deal4u.by/donate)
+- [Полный текст всех объявлений](https://www.deal4u.by/llms-full.txt)
