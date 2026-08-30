@@ -8,8 +8,8 @@ type ListingsGridProps = {
 function ListingsGrid({ listings }: ListingsGridProps) {
   return (
     <section className="listings-grid">
-      {listings.map((listing) => (
-        <ListingCard key={listing.id} listing={listing} />
+      {listings.map((listing, index) => (
+        <ListingCard key={listing.id} listing={listing} priority={index < 3} />
       ))}
     </section>
   );

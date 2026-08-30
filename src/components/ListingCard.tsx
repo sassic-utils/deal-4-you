@@ -5,6 +5,7 @@ import Link from "./Link";
 
 type ListingCardProps = {
   listing: ParsedListing;
+  priority?: boolean;
 };
 
 function getImageUrl(image: string) {
@@ -19,7 +20,7 @@ function getImageUrl(image: string) {
   return `${import.meta.env.BASE_URL}images/${image}`;
 }
 
-function ListingCard({ listing }: ListingCardProps) {
+function ListingCard({ listing, priority = false }: ListingCardProps) {
   const [mainImageFailed, setMainImageFailed] = useState(false);
 
   const imageUrls = useMemo(() => {
@@ -46,6 +47,11 @@ function ListingCard({ listing }: ListingCardProps) {
             src={mainImageSrc}
             alt={listing.title}
             style={styles.image}
+            width={800}
+            height={600}
+            loading={priority ? "eager" : "lazy"}
+            decoding={priority ? "sync" : "async"}
+            fetchPriority={priority ? "high" : "auto"}
             onError={() => setMainImageFailed(true)}
           />
         ) : (
@@ -185,12 +191,14 @@ const styles: Record<string, CSSProperties> = {
   cardTitle: {
     margin: 0,
     fontSize: "16px",
-    lineHeight: 1.12,
+    lineHeight: 1.2,
     letterSpacing: "-0.03em",
     color: "var(--ink)",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
   },
 
   meta: {
