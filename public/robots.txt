@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://deal4u.by/sitemap.xml
+Sitemap: https://www.deal4u.by/sitemap.xml
