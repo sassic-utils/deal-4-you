@@ -14,6 +14,7 @@ import { usePathname } from "../hooks/usePathname";
 import { buildHref, getPathname, navigate } from "../router";
 import { parseContact } from "../utils/parseContact";
 import { parsePriceAmount } from "../utils/parsePrice";
+import { getImageUrl } from "../utils/getImageUrl";
 
 const LISTING_PATH_PATTERN = /^\/listing\/(\d+)$/;
 const SORT_OPTIONS: SortOption[] = ["newest", "price-asc", "price-desc"];
@@ -37,18 +38,6 @@ function getFiltersFromUrl() {
       ? (sortParam as SortOption)
       : DEFAULT_SORT,
   };
-}
-
-function getImageUrl(image: string) {
-  if (!image) {
-    return "";
-  }
-
-  if (image.startsWith("http://") || image.startsWith("https://")) {
-    return image;
-  }
-
-  return `${import.meta.env.BASE_URL}images/${image}`;
 }
 
 function HomePage() {

@@ -1,24 +1,13 @@
 import { memo, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import type { ParsedListing } from "../models/listing";
+import { getImageUrl } from "../utils/getImageUrl";
 import Link from "./Link";
 
 type ListingCardProps = {
   listing: ParsedListing;
   priority?: boolean;
 };
-
-function getImageUrl(image: string) {
-  if (!image) {
-    return "";
-  }
-
-  if (image.startsWith("http://") || image.startsWith("https://")) {
-    return image;
-  }
-
-  return `${import.meta.env.BASE_URL}images/${image}`;
-}
 
 function ListingCard({ listing, priority = false }: ListingCardProps) {
   const [mainImageFailed, setMainImageFailed] = useState(false);
