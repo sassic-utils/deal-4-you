@@ -20,5 +20,4 @@ export type ParsedListing = Listing & {
   city: string;
   country: string;
   categories: string[];
-  status: string;
 };

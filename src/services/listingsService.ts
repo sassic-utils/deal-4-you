@@ -89,7 +89,6 @@ export function parseListing(listing: Listing): ParsedListing {
     city: getLabelValue(listing.labels, "city"),
     country: getLabelValue(listing.labels, "country"),
     categories: getLabelValues(listing.labels, "category"),
-    status: getLabelValue(listing.labels, "status"),
   };
 }
 
