@@ -61,11 +61,17 @@ function buildDescription(listing: ParsedListing) {
   const source = listing.description || listing.title
   const singleLine = source.replace(/\s+/g, ' ').trim()
   const prefix = listing.state === 'open' ? '' : 'Продано. '
+  const location = listing.country
+    ? `${listing.city ? `${listing.city}, ` : ''}${listing.country}. `
+    : ''
 
+  const availableLength = 160 - prefix.length - location.length
   const truncated =
-    singleLine.length > 160 ? `${singleLine.slice(0, 157)}...` : singleLine
+    singleLine.length > availableLength
+      ? `${singleLine.slice(0, Math.max(0, availableLength - 3))}...`
+      : singleLine
 
-  return `${prefix}${truncated}`
+  return `${prefix}${location}${truncated}`
 }
 
 function categoryLink(listing: ParsedListing) {
@@ -152,6 +158,9 @@ function buildJsonLd(listing: ParsedListing) {
           ? 'https://schema.org/InStock'
           : 'https://schema.org/OutOfStock',
       url: `${siteUrl}listing/${listing.number}`,
+      ...(listing.country
+        ? { areaServed: { '@type': 'Country', name: listing.country } }
+        : {}),
     }
   }
 
@@ -172,9 +181,12 @@ async function main() {
 
   await Promise.all(
     parsedListings.map(async (listing) => {
+      const titleLocation = listing.country
+        ? ` купить в ${listing.city ? `${listing.city}, ${listing.country}` : listing.country}`
+        : ''
       const pageTitle =
         listing.state === 'open'
-          ? `${listing.title} — Free Board`
+          ? `${listing.title}${titleLocation} — Free Board`
           : `${listing.title} (продано) — Free Board`
       const description = buildDescription(listing)
       const canonicalUrl = `${siteUrl}listing/${listing.number}`

@@ -224,7 +224,9 @@ async function main() {
     '## Объявления',
     '',
     ...activeListings.map((listing) => {
-      const meta = [listing.city, listing.categories.join(', ')].filter(Boolean).join(', ')
+      const meta = [listing.city, listing.country, listing.categories.join(', ')]
+        .filter(Boolean)
+        .join(', ')
       const price = listing.price ? ` — ${listing.price}` : ''
       const suffix = meta ? `: ${meta}` : ''
 
@@ -249,7 +251,9 @@ async function main() {
       'всех активных объявлений.',
     '',
     ...activeListings.flatMap((listing) => {
-      const meta = [listing.city, listing.categories.join(', ')].filter(Boolean).join(' · ')
+      const meta = [listing.city, listing.country, listing.categories.join(', ')]
+        .filter(Boolean)
+        .join(' · ')
 
       const lines = [`## ${listing.title}`, '', `URL: ${siteUrl}listing/${listing.number}`]
 
