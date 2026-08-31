@@ -8,11 +8,12 @@
     "labels": [
       "city:Витебск",
       "status:активно",
-      "category:развлечения"
+      "category:развлечения",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/23",
     "createdAt": "2026-08-30T09:24:56Z",
-    "updatedAt": "2026-08-30T09:24:56Z"
+    "updatedAt": "2026-08-31T09:02:05Z"
   },
   {
     "id": 5278287202,
@@ -24,11 +25,12 @@
       "city:Витебск",
       "status:активно",
       "category:спорт",
-      "category:туризм"
+      "category:туризм",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/22",
     "createdAt": "2026-08-28T12:39:48Z",
-    "updatedAt": "2026-08-28T12:46:03Z"
+    "updatedAt": "2026-08-31T09:02:04Z"
   },
   {
     "id": 5278203867,
@@ -40,11 +42,12 @@
       "category:электроника",
       "city:Витебск",
       "status:активно",
-      "category:аксессуары"
+      "category:аксессуары",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/21",
     "createdAt": "2026-08-28T12:28:35Z",
-    "updatedAt": "2026-08-28T12:28:35Z"
+    "updatedAt": "2026-08-31T09:02:04Z"
   },
   {
     "id": 5278139065,
@@ -56,11 +59,12 @@
       "city:Витебск",
       "status:активно",
       "category:спорт",
-      "category:туризм"
+      "category:туризм",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/20",
     "createdAt": "2026-08-28T12:19:49Z",
-    "updatedAt": "2026-08-28T12:19:49Z"
+    "updatedAt": "2026-08-31T09:02:03Z"
   },
   {
     "id": 5278078922,
@@ -71,11 +75,12 @@
     "labels": [
       "city:Витебск",
       "status:активно",
-      "category:бытовая техника"
+      "category:бытовая техника",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/19",
     "createdAt": "2026-08-28T12:12:05Z",
-    "updatedAt": "2026-08-28T12:13:14Z"
+    "updatedAt": "2026-08-31T09:02:03Z"
   },
   {
     "id": 5278050953,
@@ -87,11 +92,12 @@
       "category:электроника",
       "city:Витебск",
       "status:активно",
-      "category:развлечения"
+      "category:развлечения",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/18",
     "createdAt": "2026-08-28T12:08:25Z",
-    "updatedAt": "2026-08-28T12:13:26Z"
+    "updatedAt": "2026-08-31T09:02:02Z"
   },
   {
     "id": 5278027045,
@@ -102,11 +108,12 @@
     "labels": [
       "city:Витебск",
       "status:активно",
-      "category:спорт"
+      "category:спорт",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/17",
     "createdAt": "2026-08-28T12:05:25Z",
-    "updatedAt": "2026-08-28T12:05:25Z"
+    "updatedAt": "2026-08-31T09:02:01Z"
   },
   {
     "id": 5277807791,
@@ -118,11 +125,12 @@
       "category:электроника",
       "city:Витебск",
       "status:активно",
-      "category:оргтехника"
+      "category:оргтехника",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/16",
     "createdAt": "2026-08-28T11:35:40Z",
-    "updatedAt": "2026-08-28T11:35:40Z"
+    "updatedAt": "2026-08-31T09:02:01Z"
   },
   {
     "id": 5277701404,
@@ -134,11 +142,12 @@
       "category:электроника",
       "city:Витебск",
       "status:активно",
-      "category:развлечения"
+      "category:развлечения",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/15",
     "createdAt": "2026-08-28T11:21:55Z",
-    "updatedAt": "2026-08-28T11:21:55Z"
+    "updatedAt": "2026-08-31T09:02:00Z"
   },
   {
     "id": 5277478242,
@@ -149,11 +158,12 @@
     "labels": [
       "city:Витебск",
       "status:активно",
-      "category:антиквариат"
+      "category:антиквариат",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/14",
     "createdAt": "2026-08-28T10:53:45Z",
-    "updatedAt": "2026-08-28T10:56:44Z"
+    "updatedAt": "2026-08-31T09:02:00Z"
   },
   {
     "id": 5277106766,
@@ -164,11 +174,12 @@
     "labels": [
       "city:Витебск",
       "status:активно",
-      "category:антиквариат"
+      "category:антиквариат",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/13",
     "createdAt": "2026-08-28T10:07:34Z",
-    "updatedAt": "2026-08-28T10:55:07Z"
+    "updatedAt": "2026-08-31T09:01:59Z"
   },
   {
     "id": 5265389380,
@@ -179,11 +190,12 @@
     "labels": [
       "status:активно",
       "category:развлечения",
-      "city:Минск"
+      "city:Минск",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/12",
     "createdAt": "2026-08-27T08:12:59Z",
-    "updatedAt": "2026-08-27T08:12:59Z"
+    "updatedAt": "2026-08-31T09:01:58Z"
   },
   {
     "id": 5265376643,
@@ -194,11 +206,12 @@
     "labels": [
       "status:активно",
       "category:развлечения",
-      "city:Минск"
+      "city:Минск",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/11",
     "createdAt": "2026-08-27T08:11:18Z",
-    "updatedAt": "2026-08-27T08:11:18Z"
+    "updatedAt": "2026-08-31T09:01:58Z"
   },
   {
     "id": 5265346365,
@@ -209,11 +222,12 @@
     "labels": [
       "category:электроника",
       "city:Витебск",
-      "status:активно"
+      "status:активно",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/10",
     "createdAt": "2026-08-27T08:07:35Z",
-    "updatedAt": "2026-08-27T08:07:35Z"
+    "updatedAt": "2026-08-31T09:01:57Z"
   },
   {
     "id": 5265323778,
@@ -224,11 +238,12 @@
     "labels": [
       "status:активно",
       "category:развлечения",
-      "city:Минск"
+      "city:Минск",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/9",
     "createdAt": "2026-08-27T08:04:57Z",
-    "updatedAt": "2026-08-27T08:04:57Z"
+    "updatedAt": "2026-08-31T09:01:57Z"
   },
   {
     "id": 5265289456,
@@ -239,11 +254,12 @@
     "labels": [
       "category:электроника",
       "city:Витебск",
-      "status:активно"
+      "status:активно",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/8",
     "createdAt": "2026-08-27T08:01:00Z",
-    "updatedAt": "2026-08-27T08:01:00Z"
+    "updatedAt": "2026-08-31T09:01:56Z"
   },
   {
     "id": 5265243030,
@@ -254,10 +270,11 @@
     "labels": [
       "category:электроника",
       "city:Витебск",
-      "status:активно"
+      "status:активно",
+      "country:Беларусь"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/7",
     "createdAt": "2026-08-27T07:55:32Z",
-    "updatedAt": "2026-08-27T08:01:16Z"
+    "updatedAt": "2026-08-31T09:01:56Z"
   }
 ]
