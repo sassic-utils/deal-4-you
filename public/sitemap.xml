@@ -11,6 +11,11 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://www.deal4u.by/listing/24</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.deal4u.by/listing/23</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
