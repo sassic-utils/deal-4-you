@@ -7,7 +7,9 @@ export function getPathname() {
     pathname = pathname.slice(BASE_URL.length);
   }
 
-  return `/${pathname}`.replace(/\/+/g, "/");
+  const normalized = `/${pathname}`.replace(/\/+/g, "/");
+
+  return normalized.length > 1 ? normalized.replace(/\/$/, "") : normalized;
 }
 
 export function buildHref(path: string) {
