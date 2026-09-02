@@ -75,10 +75,8 @@ function buildDescription(listing: ParsedListing) {
 }
 
 function categoryLink(listing: ParsedListing) {
-  const primaryCategory = listing.categories[0]
-
-  return primaryCategory
-    ? `${basePath}?category=${encodeURIComponent(primaryCategory)}`
+  return listing.categories.length > 0
+    ? `${basePath}?category=${encodeURIComponent(listing.categories.join(','))}`
     : basePath
 }
 

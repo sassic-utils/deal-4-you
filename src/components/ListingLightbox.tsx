@@ -33,10 +33,10 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
     ? parseContact(listing.contact).telegramUsername
     : "";
 
-  const primaryCategory = listing.categories[0] ?? "";
-  const similarListingsLink = primaryCategory
-    ? `/?category=${encodeURIComponent(primaryCategory)}`
-    : "/";
+  const similarListingsLink =
+    listing.categories.length > 0
+      ? `/?category=${encodeURIComponent(listing.categories.join(","))}`
+      : "/";
 
   const hasImages = imageUrls.length > 0;
   const hasMultipleImages = imageUrls.length > 1;

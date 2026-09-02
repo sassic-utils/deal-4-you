@@ -157,7 +157,11 @@ function HomePage() {
           .includes(normalizedSearch);
 
       const matchesCity = !city || listing.city === city;
-      const matchesCategory = !category || listing.categories.includes(category);
+      const matchesCategory =
+        !category ||
+        category
+          .split(",")
+          .every((requiredCategory) => listing.categories.includes(requiredCategory));
 
       const matchesSeller =
         !seller ||
