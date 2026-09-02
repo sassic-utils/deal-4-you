@@ -104,11 +104,12 @@
     "labels": [
       "city:Витебск",
       "category:развлечения",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/25",
     "createdAt": "2026-08-31T17:43:45Z",
-    "updatedAt": "2026-08-31T17:52:50Z"
+    "updatedAt": "2026-09-02T10:49:21Z"
   },
   {
     "id": 5303114748,
@@ -119,11 +120,12 @@
     "labels": [
       "city:Витебск",
       "category:развлечения",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/24",
     "createdAt": "2026-08-31T17:39:21Z",
-    "updatedAt": "2026-08-31T17:52:49Z"
+    "updatedAt": "2026-09-02T10:49:21Z"
   },
   {
     "id": 5291335860,
@@ -134,11 +136,12 @@
     "labels": [
       "city:Витебск",
       "category:развлечения",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/23",
     "createdAt": "2026-08-30T09:24:56Z",
-    "updatedAt": "2026-08-31T17:52:48Z"
+    "updatedAt": "2026-09-02T10:49:20Z"
   },
   {
     "id": 5278287202,
@@ -305,11 +308,12 @@
     "labels": [
       "category:развлечения",
       "city:Минск",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/12",
     "createdAt": "2026-08-27T08:12:59Z",
-    "updatedAt": "2026-08-31T17:51:06Z"
+    "updatedAt": "2026-09-02T10:49:40Z"
   },
   {
     "id": 5265376643,
@@ -320,11 +324,12 @@
     "labels": [
       "category:развлечения",
       "city:Минск",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/11",
     "createdAt": "2026-08-27T08:11:18Z",
-    "updatedAt": "2026-08-31T17:52:40Z"
+    "updatedAt": "2026-09-02T10:49:19Z"
   },
   {
     "id": 5265346365,
@@ -350,11 +355,12 @@
     "labels": [
       "category:развлечения",
       "city:Минск",
-      "country:Беларусь"
+      "country:Беларусь",
+      "category:игры для приставок"
     ],
     "url": "https://github.com/sassic-utils/deal-4-you/issues/9",
     "createdAt": "2026-08-27T08:04:57Z",
-    "updatedAt": "2026-08-31T17:52:38Z"
+    "updatedAt": "2026-09-02T10:49:19Z"
   },
   {
     "id": 5265289456,
