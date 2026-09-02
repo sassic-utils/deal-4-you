@@ -1,5 +1,21 @@
 [
   {
+    "id": 5323699415,
+    "number": 33,
+    "title": "Настольная игра Каркассон",
+    "body": "## Description\n\nКлассическая семейная стратегия с выкладыванием тайлов. Подойдёт для семьи, компании друзей и тех, кто только знакомится с настольными играми.\n\nОсобенности:\n- базовая версия игры;\n- жанр: стратегия / тайлы;\n- простые правила;\n- подходит для детей и взрослых;\n- от 7+\n- хороша для семейных вечеров и компании 2-5 человек.\n\n## Image\n\n<img width=\"689\" height=\"919\" alt=\"Image\" src=\"00033-image-01.jpg\" />\n<img width=\"768\" height=\"1024\" alt=\"Image\" src=\"00033-image-02.jpg\" />\n\n## Price\n\n50 BYN\n\n## Contact\n\nTelegram: @andrei_kuzniatsou\nViber: https://viber.click/%2B375336970070",
+    "state": "open",
+    "labels": [
+      "city:Витебск",
+      "category:развлечения",
+      "country:Беларусь",
+      "category:настольные игры"
+    ],
+    "url": "https://github.com/sassic-utils/deal-4-you/issues/33",
+    "createdAt": "2026-09-02T12:10:12Z",
+    "updatedAt": "2026-09-02T12:10:12Z"
+  },
+  {
     "id": 5323541762,
     "number": 32,
     "title": "Настольная игра Чужая планета",
