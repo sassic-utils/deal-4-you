@@ -236,9 +236,7 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
           <div style={styles.soldNotice}>
             <p style={styles.soldNoticeText}>Товар продан.</p>
             <Link to={similarListingsLink} style={styles.soldNoticeLink}>
-              {primaryCategory
-                ? `Посмотреть похожие в категории «${primaryCategory}»`
-                : "Посмотреть все объявления"}
+              Показать похожие
             </Link>
           </div>
         )}
@@ -250,14 +248,14 @@ function ListingLightbox({ listing, imageUrls, onClose }: ListingLightboxProps) 
           </section>
         )}
 
-        {listing.description && (
+        {!isSold && listing.description && (
           <section style={styles.modalSection}>
             <h3 style={styles.sectionTitle}>Описание</h3>
             <p style={styles.modalText}>{listing.description}</p>
           </section>
         )}
 
-        {listing.contact && (
+        {!isSold && listing.contact && (
           <section style={styles.modalSection}>
             <h3 style={styles.sectionTitle}>Контакт</h3>
             <ContactLinks contact={listing.contact} />
@@ -524,9 +522,18 @@ const styles: Record<string, CSSProperties> = {
 
   soldNoticeLink: {
     display: "inline-flex",
-    color: "var(--accent)",
-    fontSize: "13px",
-    fontWeight: 800,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "8px",
+    minHeight: "36px",
+    padding: "9px 15px",
+    borderRadius: "999px",
+    background: "#dbeafe",
+    color: "#1d4ed8",
+    fontSize: "15px",
+    fontWeight: 900,
+    lineHeight: 1,
+    whiteSpace: "nowrap",
     textDecoration: "none",
   },
 

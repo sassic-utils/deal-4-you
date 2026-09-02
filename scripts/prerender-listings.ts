@@ -85,18 +85,13 @@ function categoryLink(listing: ParsedListing) {
 function buildStaticContent(listing: ParsedListing) {
   const parts: string[] = []
   const isSold = listing.state !== 'open'
-  const primaryCategory = listing.categories[0]
 
   parts.push(`<h1>${escapeHtml(listing.title)}</h1>`)
 
   if (isSold) {
-    const linkText = primaryCategory
-      ? `Похожие предложения в категории «${primaryCategory}»`
-      : 'Все объявления'
-
     parts.push(
       `<p><strong>Товар продан.</strong> ` +
-        `<a href="${categoryLink(listing)}">${escapeHtml(linkText)}</a></p>`,
+        `<a href="${categoryLink(listing)}">Показать похожие</a></p>`,
     )
   }
 
@@ -117,11 +112,11 @@ function buildStaticContent(listing: ParsedListing) {
     )
   }
 
-  if (listing.description) {
+  if (!isSold && listing.description) {
     parts.push(`<p>${escapeHtml(listing.description)}</p>`)
   }
 
-  if (listing.contact) {
+  if (!isSold && listing.contact) {
     parts.push(`<pre>${escapeHtml(listing.contact)}</pre>`)
   }
 
