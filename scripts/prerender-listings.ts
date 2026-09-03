@@ -261,6 +261,58 @@ async function main() {
   )
 
   console.log(`Prerendered ${parsedListings.length} listing pages`)
+
+  const donateTitle = 'Поддержать проект — Free Board'
+  const donateDescription = 'Поддержать бесплатную доску объявлений Free Board.'
+  const donateUrl = `${siteUrl}donate`
+
+  let donateHtml = template
+
+  donateHtml = donateHtml.replace(
+    /<title>.*?<\/title>/,
+    `<title>${escapeHtml(donateTitle)}</title>`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta\s+name="description"[^>]*\/>/,
+    `<meta name="description" content="${escapeHtml(donateDescription)}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<link rel="canonical"[^>]*\/>/,
+    `<link rel="canonical" href="${donateUrl}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta property="og:title"[^>]*\/>/,
+    `<meta property="og:title" content="${escapeHtml(donateTitle)}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta\s+property="og:description"[^>]*\/>/,
+    `<meta property="og:description" content="${escapeHtml(donateDescription)}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta property="og:url"[^>]*\/>/,
+    `<meta property="og:url" content="${donateUrl}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta\s+name="twitter:title"[^>]*\/>/,
+    `<meta name="twitter:title" content="${escapeHtml(donateTitle)}" />`,
+  )
+
+  donateHtml = donateHtml.replace(
+    /<meta\s+name="twitter:description"[^>]*\/>/,
+    `<meta name="twitter:description" content="${escapeHtml(donateDescription)}" />`,
+  )
+
+  const donateOutputDir = path.join(distDir, 'donate')
+  await fs.mkdir(donateOutputDir, { recursive: true })
+  await fs.writeFile(path.join(donateOutputDir, 'index.html'), donateHtml, 'utf8')
+
+  console.log('Prerendered donate page')
 }
 
 main().catch((error) => {
