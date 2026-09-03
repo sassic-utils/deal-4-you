@@ -61,12 +61,20 @@ function HomePage() {
       return;
     }
 
-    const params = new URLSearchParams();
-    if (search) params.set("q", search);
-    if (city) params.set("city", city);
-    if (category) params.set("category", category);
-    if (seller) params.set("seller", seller);
-    if (sortBy !== DEFAULT_SORT) params.set("sort", sortBy);
+    const params = new URLSearchParams(window.location.search);
+    const setOrDelete = (key: string, value: string) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    };
+
+    setOrDelete("q", search);
+    setOrDelete("city", city);
+    setOrDelete("category", category);
+    setOrDelete("seller", seller);
+    setOrDelete("sort", sortBy !== DEFAULT_SORT ? sortBy : "");
 
     const queryString = params.toString();
     const url = buildHref("/") + (queryString ? `?${queryString}` : "");
